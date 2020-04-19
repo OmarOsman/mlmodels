@@ -14,14 +14,11 @@ import matchzoo as mz
 import numpy as np
 import pandas as pd
 from pytorch_transformers import AdamW, WarmupLinearSchedule
-
-
-
 from mlmodels.util import os_package_root_path, log, path_norm, get_model_uri, path_norm_dict
 
 MODEL_URI = get_model_uri(__file__)
 
-MODEL_MAPPING = {
+MODELS = {
     'DRMM' : mz.models.DRMM,
     'DRMMTKS' : mz.models.DRMMTKS, 
     'ARC-I' : mz.models.ArcI,
@@ -41,15 +38,20 @@ MODEL_MAPPING = {
     'BERT' : mz.models.Bert
 }
 
-
-TASK_MAPPING = {
+TASKS = {
     'ranking' : mz.tasks.Ranking,
-    'ranking' : mz.tasks.Classification,
-
+    'classification' : mz.tasks.Classification,
 }
 
+METRICS = {
+    'NormalizedDiscountedCumulativeGain' : mz.metrics.NormalizedDiscountedCumulativeGain,
+    'MeanAveragePrecision' : mz.metrics.MeanAveragePrecision,
+    'acc' : 'acc'
+}
 
-
+LOSSES = {
+    'RankHingeLoss' : mz.losses.RankHingeLoss
+}
 
 
 def get_config_file():
@@ -67,33 +69,33 @@ class Model:
             return self
  
         _model = model_pars['model']
-        assert _model in MODEL_MAPPING.keys()
+        assert _model in MODELS.keys()
+        _task = model_pars['task']
+        assert list(_task.keys())[0] in TASKS.keys()
+        _metrics = model_pars['metrics']
+        if list(_task.keys())[0] == "ranking":
+            self.task = mz.tasks.Ranking(losses=LOSSES[_task["ranking"]["losses"][0]]())
+        elif list(_task.keys())[0] == "classification" :
+            self.task = mz.tasks.Classification(num_classes=_task["classification"]["num_classes"])
+        else:
+            raise Exception(f"Not support choice {task} yet")
+        
+        self.task.metrics = []
+        for metric in _metrics.keys():
+            metric_params = _metrics[metric]
+            # Find a better way later to apply params for metric, for now hardcode.
+            if metric == 'NormalizedDiscountedCumulativeGain' and metric_params != {}:
+                self.task.metrics.append(METRICS[metric](k=metric_params["k"]))
+            elif metric in METRICS:
+                self.task.metrics.append(METRICS[metric])
+            else:
+                raise Exception(f"Not support choice {task_m} yet")
 
-        task_name = model_pars['task_name']   
-        if task_name == "ranking" :
-            self.ranking_task = mz.tasks.Ranking(losses=mz.losses.RankHingeLoss())
-            self.ranking_task.metrics = [
-                mz.metrics.NormalizedDiscountedCumulativeGain(k=3),
-                mz.metrics.NormalizedDiscountedCumulativeGain(k=5),
-                mz.metrics.MeanAveragePrecision()
-            ]
-            self.model.params['task'] = self.ranking_task
-
-        elif task_name == "classification" :
-            self.task = mz.tasks.Classification(num_classes= data_pars["num_classes"])
-            self.task.metrics = [
-                mz.metrics.accuracy(),
-            ]
-            self.model.params['task'] = self.task
-        else :
-            raise Exception(f"Not support choice {task_name} yet")
-
-
-        self.model = MODEL_MAPPING[_model]()
+        self.model = MODELS[_model]()
+        self.model.params['task'] = self.task
         self.model.params['mode'] = model_pars['mode']
         self.model.params['dropout_rate'] = model_pars['dropout_rate']
         self.model.build()
-
 
 def get_params(param_pars=None, **kw):
     pp          = param_pars
@@ -118,9 +120,13 @@ def get_params(param_pars=None, **kw):
 
 def get_dataset_wikiqa(data_pars, model):
     
-    train_pack_raw = mz.datasets.wiki_qa.load_data('train', task=model.ranking_task)
-    dev_pack_raw   = mz.datasets.wiki_qa.load_data('dev', task=model.ranking_task, filtered=True)
-    test_pack_raw  = mz.datasets.wiki_qa.load_data('test', task=model.ranking_task, filtered=True)
+    filter_train_pack_raw = data_pars["filter_train_data"] if "filter_train_data" in data_pars else False
+    filter_dev_pack_raw = data_pars["filter_dev_data"] if "filter_dev_data" in data_pars else False
+    filter_test_pack_raw = data_pars["filter_test_data"] if "filter_test_data" in data_pars else False
+
+    train_pack_raw = mz.datasets.wiki_qa.load_data('train', task=model.task, filtered=filter_train_pack_raw)
+    dev_pack_raw   = mz.datasets.wiki_qa.load_data('dev', task=model.task, filtered=filter_dev_pack_raw)
+    test_pack_raw  = mz.datasets.wiki_qa.load_data('test', task=model.task, filtered=filter_test_pack_raw)
 
     preprocessor   = model.model.get_default_preprocessor()
 
@@ -128,20 +134,41 @@ def get_dataset_wikiqa(data_pars, model):
     dev_pack_processed   = preprocessor.transform(dev_pack_raw)
     test_pack_processed  = preprocessor.transform(test_pack_raw)
 
+    train_mode = data_pars["mode"] if "mode" in data_pars else None
+    train_num_dup = data_pars["num_dup"] if "num_dup" in data_pars else None
+    train_num_neg = data_pars["num_neg"] if "num_neg" in data_pars else None
+    train_resample = data_pars["train_resample"] if "train_resample" in data_pars else False
+    train_sort = data_pars["train_sort"] if "train_sort" in data_pars else False
+
     trainset = mz.dataloader.Dataset(
         data_pack=train_pack_processed,
-        mode=data_pars['mode'],
-        num_dup=data_pars['num_dup'],
-        num_neg=data_pars['num_neg'],
+        mode=train_mode,
+        num_dup=train_num_dup,
+        num_neg=train_num_neg,
         batch_size=data_pars["train_batch_size"],
         resample=True,
         sort=False,
     )
-    testset          = mz.dataloader.Dataset(data_pack=test_pack_processed, batch_size=data_pars["test_batch_size"] )
+
+    testset = mz.dataloader.Dataset(
+        data_pack=test_pack_processed,
+        batch_size=data_pars["test_batch_size"],
+    )
+
     padding_callback = model.model.get_default_padding_callback()
 
-    trainloader      = mz.dataloader.DataLoader(dataset=trainset, stage='train', callback=padding_callback )
-    testloader       = mz.dataloader.DataLoader(dataset=testset, stage='dev', callback=padding_callback )
+    trainloader = mz.dataloader.DataLoader(
+        dataset=trainset,
+        stage='train',
+        callback=padding_callback
+    )
+
+    testloader = mz.dataloader.DataLoader(
+        dataset=testset,
+        stage='dev',
+        callback=padding_callback
+    )
+
     return trainloader, testloader
 
 def get_dataset(data_pars=None, **kw):
@@ -177,7 +204,7 @@ def fit(model, data_pars=None, compute_pars=None, out_pars=None, **kwargs):
     os.makedirs(out_pars["checkpointdir"], exist_ok=True)
     
     trainer = mz.trainers.Trainer(
-              model=model.model, optimizer=optimizer, trainloader=trainloader, validloader=validloader, epochs=epochs )
+              model=model.model, optimizer=optimizer, trainloader=trainloader, validloader=validloader, epochs=epochs)
     trainer.run()
     return model, None
 
@@ -248,7 +275,8 @@ def test(data_path="dataset/", pars_choice="json", config_mode="test"):
 
 
 if __name__ == "__main__":
-    test(data_path="model_tch/matchzoo.json", pars_choice="json", config_mode="test")
+    test(data_path="model_tch/matchzoo_classification_bert.json", pars_choice="json", config_mode="test")
+
 
 
 

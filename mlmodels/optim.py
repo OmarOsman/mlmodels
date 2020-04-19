@@ -23,14 +23,14 @@ python optim.py --model_uri model_tf.1_lstm.py  --do search
 import argparse
 import json
 import os
-import re
+import copy
 
 # import pandas as pd
 
 
 ####################################################################################################
 # from mlmodels import models
-from mlmodels.models import model_create, module_load, save
+from mlmodels.models import model_create, module_load
 from mlmodels.util import log, os_package_root_path, path_norm, tf_deprecation
 
 ####################################################################################################
@@ -101,14 +101,15 @@ def optim_optuna(model_uri="model_tf.1_lstm.py",
     """
     import optuna
 
-    engine_pars = hypermodel_pars['engine_pars']
-
-    save_path = out_pars['save_path']
-    log_path = out_pars['log_path']
-    ntrials = engine_pars['ntrials']
+    engine_pars   = hypermodel_pars['engine_pars']
+    ntrials       = engine_pars['ntrials']
     metric_target = engine_pars["metric_target"]
+
+    save_path     = out_pars['save_path']
+    log_path      = out_pars['log_path']
+
+    model_name    = model_pars.get("model_name")  #### Only for sklearn model
     # model_type    = model_pars['model_type']
-    model_name = model_pars.get("model_name")  #### Only for sklearn model
     log(model_pars, data_pars, compute_pars, hypermodel_pars)
 
     module = module_load(model_uri)
@@ -142,6 +143,7 @@ def optim_optuna(model_uri="model_tf.1_lstm.py",
 
         model, sess = module.fit(model, data_pars=data_pars, compute_pars=compute_pars, out_pars=out_pars)
         metrics = module.fit_metrics(model, data_pars=data_pars, compute_pars=compute_pars, out_pars=out_pars)
+        mtarget = metrics[metric_target]
 
         del sess, model
         try:
@@ -149,7 +151,8 @@ def optim_optuna(model_uri="model_tf.1_lstm.py",
         except Exception as e:
             log(e)
 
-        return metrics[metric_target]
+        return mtarget
+
 
     log("###### Hyper-optimization through study   ##################################")
     pruner = optuna.pruners.MedianPruner() if engine_pars["method"] == 'prune' else None
@@ -169,6 +172,7 @@ def optim_optuna(model_uri="model_tf.1_lstm.py",
     param_dict_best = study.best_params
     # param_dict.update(module.config_get_pars(choice="test", )
 
+
     log("### Save Stats   ##########################################################")
     os.makedirs(save_path, exist_ok=True)              
     study_trials = study.trials_dataframe()  
@@ -176,13 +180,15 @@ def optim_optuna(model_uri="model_tf.1_lstm.py",
     param_dict_best["best_value"] = study.best_value
     json.dump(param_dict_best, open(f"{save_path}/{model_uri}_best-params.json", mode="w"))
 
+
     log("### Run Model with best   #################################################")
-    model_pars_update = model_pars
+    model_pars_update = copy.deepcopy(model_pars)
     model_pars_update.update(param_dict_best)
     model_pars_update["model_name"] = model_name  ###SKLearn model
 
     model = model_create(module, model_pars_update, data_pars, compute_pars)
     model, sess = module.fit(model, data_pars=data_pars, compute_pars=compute_pars, out_pars=out_pars)
+
 
     log("#### Saving     ###########################################################")
     model_uri = model_uri.replace(".", "-")
@@ -194,6 +200,7 @@ def optim_optuna(model_uri="model_tf.1_lstm.py",
     return model_pars_update
 
 
+
 def post_process_best(model, module, model_uri, model_pars_update, data_pars, compute_pars, out_pars):
     log("### Run Model with best   #################################################")
     model = model_create(module, model_pars_update, data_pars, compute_pars)
@@ -201,10 +208,12 @@ def post_process_best(model, module, model_uri, model_pars_update, data_pars, co
 
     log("#### Saving     ###########################################################")
     model_uri = model_uri.replace(".", "-")
+    save_path = out_pars['save_path']
     save_pars = {'path': save_path , 'model_type': model_uri.split("-")[0], 'model_uri': model_uri}
     module.save(model=model, session=sess, save_pars=save_pars)
 
     return model_pars_update
+
 
 
 ####################################################################################################
@@ -307,10 +316,12 @@ def cli_load_arguments(config_file=None):
     ###### data_pars
     add("--data_path", default="dataset/GOOG-year_small.csv", help="path of the training file")
 
+
     ###### compute params
     add("--ntrials", default=100, help='number of trials during the hyperparameters tuning')
     add('--optim_engine', default='optuna', help='Optimization engine')
     add('--optim_method', default='normal/prune', help='Optimization method')
+
 
     ###### out params
     add('--save_path', default='ztest/search_save/', help='folder that will contain saved version of best model')
@@ -333,17 +344,17 @@ def main():
 
     if arg.do == "search":
         # model_pars, data_pars, compute_pars = config_get_pars(arg)
-        js = json.load(open(arg.config_file, 'rb'))  # Config
+        js = json.load(open(arg.config_file, mode='rb'))  # Config
         js = js[arg.config_mode]  # test /uat /prod
 
         # log(model_pars, data_pars, compute_pars)
         log("############# OPTIMIZATION Start  ###############")
         res = optim(js["model_pars"]["modeluri"],
-                    hypermodel_pars=js["hypermodel_pars"],
-                    model_pars=js["model_pars"],
-                    compute_pars=js["compute_pars"],
-                    data_pars=js["data_pars"],
-                    out_pars=js["out_pars"])
+                    hypermodel_pars = js["hypermodel_pars"],
+                    model_pars      = js["model_pars"],
+                    compute_pars    = js["compute_pars"],
+                    data_pars       = js["data_pars"],
+                    out_pars        = js["out_pars"])
 
         log("#############  OPTIMIZATION End ###############")
         log(res)

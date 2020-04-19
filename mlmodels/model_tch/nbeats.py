@@ -1,5 +1,6 @@
 import json
 import os
+import copy
 
 import numpy as np
 import pandas as pd
@@ -19,32 +20,94 @@ MODEL_URI = get_model_uri(__file__)
 ####################################################################################################
 from mlmodels.model_tch.raw.nbeats.model import NBeatsNet
 
+
+
+
+
 # Model
-Model = NBeatsNet
+class Model:
+    def __init__(self, model_pars=None, data_pars=None, compute_pars=None):
+        self.model_pars = model_pars    
+
+        if model_pars is None : 
+            self.model = None
+            return None
+
+
+        #### Remove Params
+        if model_pars.get("model_uri") :
+            del model_pars["model_uri"]
+        self.model = NBeatsNet(**model_pars)
+
+
 
 
 ####################################################################################################
-# Dataaset
+def get_data(data_pars):
+  d = data_pars
+
+  pred_length = d["prediction_length"]
+  features    = d["col_Xinput"]
+  target      = d["col_ytarget"]
+  feat_len    = len(features)
+
+
+  if d.get("test_data_path"):
+    test = pd.read_csv(path_norm(data_pars["test_data_path"]))
+    x_test = test[features]
+    del test
+    x_test = x_test.values.reshape(-1, pred_length, feat_len)
+    y_test = test[target].fillna(0)
+    y_test = y_test.values.reshape(-1, pred_length, 1)        
+    
+    if d["predict_only"]:        
+        return x_test, y_test
+    
+    train = pd.read_csv(path_norm( data_pars["train_data_path"]))
+    x_train = train[features]
+    del train
+    x_train = x_train.values.reshape(-1, pred_length, feat_len)
+    y_train = train[features].shift().fillna(0)
+    y_train = y_train.values.reshape(-1, pred_length, 1)
+
+    return x_train, y_train, x_test, y_test
+
+
+
+
+
+
 def get_dataset(**kw):
-    data_path = kw['data_path']
+    data_path = path_norm( kw['train_data_path'] )
     train_split_ratio = kw.get("train_split_ratio", 0.8)
 
-    df = pd.read_csv(data_path, index_col=0, parse_dates=True)
-    if kw["test_data_path"]:
-        test = df = pd.read_csv(kw["test_data_path"], 
-                                index_col=0, parse_dates=True)
+    df = pd.read_csv(data_path,  parse_dates=True)
+
+    #### Filter by columns 
+    df = df[ kw['col_Xinput'] ]
+    df = df.fillna(method="pad")
+
+    if kw.get("test_data_path"):
+        test = pd.read_csv( path_norm(kw["test_data_path"]),  parse_dates=True)
+        test = test[ kw['col_Xinput'] ]        
+        test = test.fillna(method="pad")
+
         df = df.append(test)
         train_split_ratio = kw["forecast_length"] / df.shape[0]
+    
+
     if VERBOSE: print(df.head(5))
 
     #### Preprocess
+
     df = df.values  # just keep np array here for simplicity.
     norm_constant = np.max(df)
     df = df / norm_constant  # small leak to the test set here.
+    print(df)
 
     x_train_batch, y = [], []
-    backcast_length = kw['backcast_length']
-    forecast_length = kw['forecast_length']
+    backcast_length  = kw['backcast_length']
+    forecast_length  = kw['forecast_length']
     for i in range(backcast_length, len(df) - forecast_length):
         x_train_batch.append(df[i - backcast_length:i])
         y.append(df[i:i + forecast_length])
@@ -52,11 +115,12 @@ def get_dataset(**kw):
     x_train_batch = np.array(x_train_batch)[..., 0]
     y = np.array(y)[..., 0]
 
-    #### Split
-    c = int(len(x_train_batch) * train_split_ratio)
+    #### Split   ###############################################
+    c                = int(len(x_train_batch) * train_split_ratio)
     x_train, y_train = x_train_batch[:c], y[:c]
-    x_test, y_test = x_train_batch[c:], y[c:]
+    x_test, y_test   = x_train_batch[c:], y[c:]
     return x_train, y_train, x_test, y_test, norm_constant
+
 
 
 def data_generator(x_full, y_full, bs):
@@ -83,17 +147,23 @@ def fit(model, data_pars=None, compute_pars=None, out_pars=None, **kw):
     batch_size = compute_pars["batch_size"]  # greater than 4 for viz
     disable_plot = compute_pars["disable_plot"]
 
+
+    # model0 = model.model
+    model0 = model.model
+
     ### Get Data
     x_train, y_train, x_test, y_test, _ = get_dataset(**data_pars)
     data_gen = data_generator(x_train, y_train, batch_size)
 
     ### Setup session
     # print("[DEBUG] from fir of nbeats parameter {}\n",format(model.parameters()))
-    optimiser = optim.Adam(model.parameters())
+    optimiser = optim.Adam(model0.parameters())
 
     ### fit model
-    net, optimiser = fit_simple(model, optimiser, data_gen, plot_model, device, data_pars, out_pars)
-    return net, optimiser
+    net, optimiser = fit_simple(model0, optimiser, data_gen, plot_model, device, data_pars, out_pars)
+
+    model.model = net
+    return model, optimiser
 
 
 def fit_simple(net, optimiser, data_generator, on_save_callback, device, data_pars, out_pars, max_grad_steps=500):
@@ -122,15 +192,19 @@ def fit_simple(net, optimiser, data_generator, on_save_callback, device, data_pa
     return net, optimiser
 
 
+
 def predict(model, data_pars=None, compute_pars=None, out_pars=None, **kw):
+    model0 = model.model
     _, _, x_test, y_test, _ = get_dataset(**data_pars)
 
+   
     test_losses = []
-    model.eval()
-    _, f = model(torch.tensor(x_test, dtype=torch.float))
+    model0.eval()
+    _, f = model0(torch.tensor(x_test, dtype=torch.float))
     test_losses.append(F.mse_loss(f, torch.tensor(y_test, dtype=torch.float)).item())
-    p = f.detach().numpy()
-    return p, y_test
+    y_pred = f.detach().numpy()
+    return y_pred, y_test
+
 
 
 ###############################################################################################################
@@ -217,32 +291,21 @@ def load_checkpoint(model, optimiser, CHECKPOINT_NAME='nbeats-fiting-checkpoint.
 
 
 def save(model, session, save_pars):
-        optimiser = session
-        grad_step = save_pars['grad_step']
-        CHECKPOINT_NAME = save_pars['checkpoint_name']
-        torch.save({
-            'grad_step': grad_step,
-            'model_state_dict': model.state_dict(),
-            'optimizer_state_dict': optimiser.state_dict(),
-        }, CHECKPOINT_NAME)
+    model0          = model.model
+    optimiser       = session
+    grad_step       = save_pars['grad_step']
+    CHECKPOINT_NAME = save_pars['checkpoint_name']
+    torch.save({
+        'grad_step': grad_step,
+        'model_state_dict': model0.state_dict(),
+        'optimizer_state_dict': optimiser.state_dict(),
+    }, CHECKPOINT_NAME)
 
 
-    # def load(model, optimiser, CHECKPOINT_NAME='nbeats-fiting-checkpoint.th'):
 def load(load_pars):
-        model = None
-        session = None
+    model   = None
+    session = None
 
-        CHECKPOINT_NAME = load_pars['checkpoint_name']
-        optimiser = session
-
-        if os.path.exists(CHECKPOINT_NAME):
-            checkpoint = torch.load(CHECKPOINT_NAME)
-            model.load_state_dict(checkpoint['model_state_dict'])
-            optimiser.load_state_dict(checkpoint['optimizer_state_dict'])
-            grad_step = checkpoint['grad_step']
-            print(f'Restored checkpoint from {CHECKPOINT_NAME}.')
-            return grad_step
-        return 0
 
 
 
@@ -293,11 +356,8 @@ def get_params(param_pars, **kw):
         return model_pars, data_pars, compute_pars, out_pars
 
 
-class Model:
-    def __init__(self, model_pars=None, data_pars=None, compute_pars=None):
-        if model_pars["model_uri"]:
-            del model_pars["model_uri"]
-        self.model = NBeatsNet(**model_pars)
+
+
 
 #############################################################################################################
 
@@ -314,7 +374,7 @@ def test(choice="json", data_path="nbeats.json", config_mode="test"):
 
 
     log("#### Model setup   ##########################################")
-    model = NBeatsNet(**model_pars)
+    model = Model(model_pars, data_pars, compute_pars)
 
     log("#### Model fit   ############################################")
     model, optimiser = fit(model, data_pars, compute_pars, out_pars)

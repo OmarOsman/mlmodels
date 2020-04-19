@@ -26,6 +26,18 @@ def log(*s, n=0, m=1):
 
 
 ####################################################################################################
+def get_device_torch():
+    import torch, numpy as np
+    if torch.cuda.is_available():
+        device = "cuda:{}".format(np.random.randint(torch.cuda.device_count()))
+    else:
+        device = "cpu"
+    print("use device", device)
+    return device
+
+
+
+
 def os_folder_copy(src, dst):
     """Copy a directory structure overwriting existing files"""
     import shutil
@@ -521,9 +533,12 @@ def load_keras(load_pars, custom_pars=None):
     path_file = path + "/" + filename if ".h5" not in path else path
     model = Model_empty()
     if custom_pars:
-        model.model = load_model(path_file, 
-                             custom_objects={"MDN": custom_pars["MDN"],
-                                             "mdn_loss_func": custom_pars["loss"]})
+        if custom_pars.get("custom_objects"):
+            model.model = load_model(path_file, custom_objects=custom_pars["custom_objects"])
+        else:
+            model.model = load_model(path_file,
+                                     custom_objects={"MDN": custom_pars["MDN"],
+                                                     "mdn_loss_func": custom_pars["loss"]})
     else:
         model.model = load_model(path_file)
     return model
@@ -567,20 +582,25 @@ def load_callable_from_uri(uri):
         module_name = '.'.join(module_path.split('.')[:-1])
         spec = importlib.util.spec_from_file_location(module_name, module_path)
         module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(foo)
+        spec.loader.exec_module(module)
     else:
         module = importlib.import_module(module_path)
     return dict(getmembers(module))[callable_name]
         
-def load_callable_from_dict(function_dict):
-    uri = function_dict['uri']
+def load_callable_from_dict(function_dict, return_other_keys=False):
+    function_dict = function_dict.copy()
+    uri = function_dict.pop('uri')
     func = load_callable_from_uri(uri)
     try:
         assert(callable(func))
     except:
         raise TypeError(f'{func} is not callable')
-    arg = function_dict.get('arg', None)
-    return func, arg
+    arg = function_dict.pop('arg', {})
+    if not return_other_keys:
+        return func, arg
+    else:
+        return func, arg, function_dict
+    
 
 """
 def path_local_setup(current_file=None, out_folder="", sublevel=0, data_path="dataset/"):

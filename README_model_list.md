@@ -92,6 +92,7 @@ mlmodels.model_keras.charcnn.py
 mlmodels.model_keras.charcnn_zhang.py
 mlmodels.model_keras.keras_gan.py
 mlmodels.model_keras.namentity_crm_bilstm.py
+mlmodels.model_keras.namentity_crm_bilstm_dataloader.py
 mlmodels.model_keras.nbeats.py
 mlmodels.model_keras.textcnn.py
 mlmodels.model_keras.textvae.py
@@ -104,10 +105,13 @@ mlmodels.model_sklearn.model_sklearn.py
 
 
 mlmodels.model_tch.02_mlp.py
+mlmodels.model_tch.Autokeras.py
 mlmodels.model_tch.matchzoo_models.py
 mlmodels.model_tch.nbeats.py
 mlmodels.model_tch.pplm.py
+mlmodels.model_tch.pytorch_vae.py
 mlmodels.model_tch.textcnn.py
+mlmodels.model_tch.textcnn_dataloader.py
 mlmodels.model_tch.torchhub.py
 mlmodels.model_tch.transformer_classifier.py
 mlmodels.model_tch.transformer_sentence.py

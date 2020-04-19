@@ -78,16 +78,6 @@ from mlmodels.util import log, path_norm
 
 
 
-
-
-
-
-
-
-
-
-
-
 ####################################################################################################
 class Model(object):
     def __init__(self, model_pars=None, data_pars=None, compute_pars=None):
@@ -147,6 +137,7 @@ def fit_metrics(model, data_pars=None, compute_pars=None, out_pars=None, **kw):
     if metric_score_name is None :
         return {}
     
+    
     from sklearn.metrics import roc_auc_score,mean_squared_error,accuracy_score
     if metric_score_name == "roc_auc_score" :
         score = roc_auc_score(yval, ypred)
@@ -159,8 +150,14 @@ def fit_metrics(model, data_pars=None, compute_pars=None, out_pars=None, **kw):
     if metric_score_name == "accuracy_score":
         ypred = ypred.argmax(axis=1)
         score = accuracy_score(yval, ypred)
-   
         ddict[metric_score_name] = score
+
+    else :
+        from mlmodels.metrics import metrics_eval
+        ddict = metrics_eval( metric_list=[ metric_score_name ], ytrue= yval, ypred= ypred, 
+                         ypred_proba=None, return_dict=1   )
+        return ddict
+
     return ddict
 
 

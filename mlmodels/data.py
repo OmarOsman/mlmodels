@@ -6,6 +6,92 @@ import sys
 from mlmodels.util import os_package_root_path, path_norm
 
 
+
+
+def tf_dataset(dataset_pars):
+    """
+    dataset_pars ={ "dataset_id" : "mnist", "batch_size" : 5000, "n_train"= 500, "n_test" = 500, 
+                    "out_path" : "dataset/vision/"
+    }
+
+
+    import tensorflow_datasets as tfds
+import tensorflow as tf
+
+# Here we assume Eager mode is enabled (TF2), but tfds also works in Graph mode.
+
+# See available datasets
+print(tfds.list_builders())
+
+# Construct a tf.data.Dataset
+ds_train = tfds.load(name="mnist", split="train", shuffle_files=True)
+
+# Build your input pipeline
+ds_train = ds_train.shuffle(1000).batch(128).prefetch(10)
+for features in ds_train.take(1):
+  image, label = features["image"], features["label"]
+  
+  
+    NumPy Usage with tfds.as_numpy
+As a convenience for users that want simple NumPy arrays in their programs, you can use tfds.as_numpy to return a generator that yields NumPy array records out of a tf.data.Dataset. This allows you to build high-performance input pipelines with tf.data but use whatever you'd like for your model components.
+
+train_ds = tfds.load("mnist", split="train")
+train_ds = train_ds.shuffle(1024).batch(128).repeat(5).prefetch(10)
+for example in tfds.as_numpy(train_ds):
+  numpy_images, numpy_labels = example["image"], example["label"]
+You can also use tfds.as_numpy in conjunction with batch_size=-1 to get the full dataset in NumPy arrays from the returned tf.Tensor object:
+
+train_ds = tfds.load("mnist", split=tfds.Split.TRAIN, batch_size=-1)
+numpy_ds = tfds.as_numpy(train_ds)
+numpy_images, numpy_labels = numpy_ds["image"], numpy_ds["label"]
+    
+    
+>>> test_array = np.random.rand(3, 2)
+>>> test_vector = np.random.rand(4)
+>>> np.savez_compressed('/tmp/123', a=test_array, b=test_vector)
+>>> loaded = np.load('/tmp/123.npz')
+>>> print(np.array_equal(test_array, loaded['a']))
+    
+    for ex in ds_numpy:
+  # `{'image': np.array(shape=(28, 28, 1)), 'labels': np.array(shape=())}`
+  print(ex)
+    
+    
+    """
+    import tensorflow_datasets as tfds
+
+    d          = dataset_pars
+    dataset_id = d['dataset_id']
+    batch_size = d.get('batch_size', -1)  # -1 neans all the dataset
+    n_train    = d.get("n_train", 500)
+    n_test     = d.get("n_test", 500)
+    out_path   = path_norm(d['out_path'] )
+    name       = dataset_id.replace(".","-")    
+    os.makedirs(out_path, exist_ok=True) 
+
+
+    train_ds =  tfds.as_numpy( tfds.load(dataset_id, split= f"train[0:{n_train}]", batch_size=batch_size) )
+    test_ds  = tfds.as_numpy( tfds.load(dataset_id, split= f"test0[0:{n_test}]", batch_size=batch_size) )
+    
+    print("train", train_ds)
+    print("test",  test_ds)
+
+    
+    for x in train_ds:
+       print(x)
+       np.savez_compressed(out_path + f"{name}_train" , X = train_ds['train'] , y = train_ds.get('label') )
+        
+
+    for x in test_ds:
+       print(x)
+       np.savez_compressed(out_path + f"{name})_test", X = train_ds['train'] , y = train_ds.get('label') )
+        
+    print( os.listdir( out_path ))
+        
+        
+        
+    
+
 """
 
 Dataset from pytorch Vision

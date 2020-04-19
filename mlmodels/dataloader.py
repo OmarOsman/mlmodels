@@ -1,492 +1,376 @@
+# -*- coding: utf-8 -*-
+"""
+
+
+
+https://www.tensorflow.org/api_docs/python/tf/compat/v1
+tf.compat.v1   IS ALL TF 1.0
+
+tf.compat.v2    iS TF 2.0
+
+
+
+Typical user workflow
+
+def get_dataset(data_pars):
+    loader = DataLoader(data_pars)
+    loader.compute()
+    data = loader.get_data()
+    [print(x.shape) for x in data]
+    return data
+
+
+
+
+"""
+#### System utilities
 import os
 import sys
 import inspect
 from urllib.parse import urlparse
-from collections.abc import MutableMapping
 import json
-
+from importlib import import_module
 import pandas as pd
 import numpy as np
-import sklearn
-import keras
+from collections.abc import MutableMapping
+from functools import partial
 
-
-from sklearn.model_selection import train_test_split
+# possibly replace with keras.utils.get_file down the road?
+#### It dowloads from HTTP from Dorpbox, ....  (not urgent)
 from cli_code.cli_download import Downloader
 
-
-from importlib import import_module
-
+from sklearn.model_selection import train_test_split
 import cloudpickle as pickle
 
-from preprocessor import Preprocessor
 
+#########################################################################
+#### mlmodels-internal imports
 from util import load_callable_from_dict
 
 
-
-class DataLoaderError(Exception):
-    pass
-
-
+#########################################################################
+#### Specific packages   ##### Be ware of tensorflow version
+#### I fpossible, we dont use to have dependance on tensorflow, torch, ...
 
 
+"""  Not used
+import tensorflow as tf
+import torch
+import torchtext
+import keras
 
-"""
-#### Can you remove those Exception... by RaiseError(  )  when needed --> Reduce code volume
-
-class MissingLocationKeyError(DataLoaderError):
-    def __init__(self):
-        print("Location key missing from the input dictionary.")
-
-
-class UndeterminableLocationTypeError(DataLoaderError):
-    def __init__(self, location):
-        print(f"Location type cannot be inferred for '{location}'.")
-
-
-class UnknownLocationTypeError(DataLoaderError):
-    def __init__(self, path_type):
-        print(f"Location type '{  path_type}' is unknown.")
-
-
-class NonfileURLError(DataLoaderError):
-    def __init__(self):
-        print(f"URL must point to a file.")
-
-
-class UndeterminableDataLoaderError(DataLoaderError):
-    def __init__(self):
-        print(
-            f"Loader function to be used was not provided and could not be  automatically inferred from file type."
-        )
-
-
-class NonIntegerBatchSizeError(DataLoaderError):
-    def __init__(self):
-        print(f"Provided batch size cannot be interpreted as an integer.")
-
-
-class InvalidDataLoaderFunctionError(DataLoaderError):
-    def __init__(self, loader):
-        print(f"Invalid data loader function '{loader}\ specified.")
-
-
-class NumpyGeneratorError(DataLoaderError):
-    def __init__(self):
-        print(f"Loading Numpy binaries as generators is unsupported.")
-
-
-class OutputShapeError(DataLoaderError):
-    def __init__(self, specified, actual):
-        print(
-            f"""Specified output shape {specified} does not match actual output
-            shape {actual}"""
-        )
+import tensorflow.data
 """
 
 
-def open_read(file):
-    return open(f).read()
 
 
+
+
+#########################################################################
 def pickle_load(file):
     return pickle.load(open(f, " r"))
 
 
-class AbstractDataLoader:
+def pickle_dump(t,path):
+    pickle.dump(t, open(path, "wb" ))
+
+
+def image_dir_load(path):
+    return ImageDataGenerator().flow_from_directory(path)
+
+
+def batch_generator(iterable, n=1):
+    l = len(iterable)
+    for ndx in range(0, l, n):
+        yield iterable[ndx : min(ndx + n, l)]
+
+
+def _interpret_input_pars(self, input_pars):
+    try:
+        path = input_pars["path"]
+    except KeyError:
+        raise Exception("Missing path key in the dataloader.")
+
+    path_type = input_pars.get("path_type", None)
+    if path_type is None:
+        if os.path.isfile(path):
+            path_type = "file"
+        if os.path.isdir(path):
+            path_type = "dir"
+
+        if urlparse(path).scheme != "":
+            path_type = "url"
+            download_path = input_pars.get("download_path", "./")
+
+        if path_type == "dropbox":
+            dropbox_download(path)
+            path_type = "file"
+
+        if path_type is None:
+            raise Exception(f"Path type for {path} is undeterminable")
+
+    elif path_type != "file" and path_type != "dir" and path_type != "url":
+        raise Exception("Unknown location type")
+
+    file_type = input_pars.get("file_type", None)
+    if file_type is None:
+        if path_type == "dir":
+            file_type = "image_dir"
+        elif path_type == "file":
+            file_type = os.path.splitext(path)[1]
+        else:
+            if path[-1] == "/":
+                raise Exception("URL must target a single file.")
+            file_type = os.path.splittext(path.split("/")[-1])[1]
+
+    self.path = path
+    self.path_type = path_type
+    self.file_type = file_type
+    self.test_size = input_pars.get("test_size", None)
+    self.generator = input_pars.get("generator", False)
+    if self.generator:
+        try:
+            self.batch_size = int(input_pars.get("batch_size", 1))
+        except:
+            raise Exception("Batch size must be an integer")
+    self.col_Xinput = input_pars.get("col_Xinput", None)
+    self.col_Yinput = input_pars.get("col_Yinput", None)
+    self.col_miscinput = input_pars.get("col_miscinput", None)
+    validation_split_function = [
+        {"uri": "sklearn.model_selection::train_test_split", "arg": {}},
+        "test_size",
+    ]
+    self.validation_split_function = input_pars.get(
+        "split_function", validation_split_function
+    )
+
+
+def _check_output_shape(self, inter_output, shape, max_len):
+    case = 0
+    if isinstance(inter_output, tuple):
+        if not isinstance(inter_output[0], dict):
+            case = 1
+        else:
+            case = 2
+    if isinstance(inter_output, dict):
+        if not isinstance(tuple(inter_output.values())[0], dict):
+            case = 3
+        else:
+            case = 4
+    # max_len enforcement
+    if max_len is not None:
+        try:
+            if case == 0:
+                inter_output = inter_output[0:max_len]
+            if case == 1:
+                inter_output = [o[0:max_len] for o in inter_output]
+            if case == 3:
+                inter_output = {
+                    k: v[0:max_len] for k, v in inter_output.items()
+                }
+        except:
+            pass
+    # shape check
+    if shape is not None:
+        if (
+            case == 0
+            and hasattr(inter_output, "shape")
+            and tuple(shape) != inter_output.shape
+        ):
+            raise Exception(
+                f"Expected shape {tuple(shape)} does not match shape data shape {inter_output.shape[1:]}"
+            )
+        if case == 1:
+            for s, o in zip(shape, inter_output):
+                if hasattr(o, "shape") and tuple(s) != o.shape[1:]:
+                    raise Exception(
+                        f"Expected shape {tuple(shape)} does not match shape data shape {inter_output.shape[1:]}"
+                    )
+        if case == 3:
+            for s, o in zip(shape, tuple(inter_output.values())):
+                if hasattr(o, "shape") and tuple(s) != o.shape[1:]:
+                    raise Exception(
+                        f"Expected shape {tuple(shape)} does not match shape data shape {inter_output.shape[1:]}"
+                    )
+    self.output_shape = shape
+    return inter_output
+
+
+class DataLoader:
 
     default_loaders = {
-        ".csv": {"uri": "pandas::read_csv"},
-        ".txt": {"uri": "dataloader::open_read"},   #### NO Please make USER input OVer-ride.
-        ".npy": {"uri": "numpy::load"},
-        ".npz": {"uri": "np::.load", "arg": {"allow_pickle": True}},
-        ".pkl": {"uri": "dataloader::pickle_load"},
+        ".csv": {"uri": "pandas::read_csv", "pass_data_pars":False},
+        ".npy": {"uri": "numpy::load", "pass_data_pars":False},
+        ".npz": {"uri": "np:load", "arg": {"allow_pickle": True}, "pass_data_pars":False},
+        ".pkl": {"uri": "dataloader::pickle_load", "pass_data_pars":False},
+        "image_dir": {"uri": "dataloader::image_dir_load", "pass_data_pars":False},
     }
-
-    val_split_function = [train_test_split, "test_size", {}]  #### Why not using train_test
-
-
-    def __init__(self, input_pars, loader, preprocessor, output, **args):
-        self._misc_dict = args if args is not None else {}
-        self._interpret_input_pars(input_pars)
-        loaded_data = self._load_data(loader)
-        if isinstance(preprocessor, Preprocessor):
-            self.preprocessor = preprocessor
-            data_tmp = self.preprocessor.transform(loaded_data)
-
-        else:
-            self.preprocessor = Preprocessor(preprocessor)
-            data_tmp = self.preprocessor.fit_transform(loaded_data)
-
-
-        ######## Xinput
-        Xinput = []
-        if self.X_cols is not None:
-            for x in self.X_cols:
-                if isinstance(x, str):
-                    Xinput.append(data_tmp[x])
-                else:
-                    try:
-                        Xinput.append(data_tmp[:, x])
-                    except:
-                        Xinput.append(data_tmp[x])
-
-        ######## yinput
-        yinput = []
-        if self.y_cols is not None:
-            for y in self.y_cols:
-                if isinstance(y, str):
-                    yinput.append(data_tmp[y])
-                else:
-                    try:
-                        yinput.append(data_tmp[:, y])
-                    except:
-                        yinput.append(data_tmp[y])
-
-        ####### Other columns (columns that shouldn't be split if test_size > 0)
-        misc_input = []
-        if self.misc_cols is not None:
-            for m in self.misc_cols:
-                if isinstance(m, str):
-                    misc_input.append(data_tmp[m])
-                else:
-                    try:
-                        misc_input.append(data_tmp[:, m])
-
-                    except:
-                        misc_input.append(data_tmp[m])
-
-        split_size_arg_dict = {self.val_split_function[1]: self.test_size, **self.val_split_function[2], } 
-
-
-        if (self.test_size > 0 and not self.generator and len(Xinput) > 0 and len(yinput) > 0 ):
-            data_tmp = self.val_split_function[0]( *(Xinput + yinput), **split_size_arg_dict ) 
-
-        elif self.test_size > 0:
-            data_tmp = self.val_split_function[0](data_tmp, **split_size_arg_dict )
-
-        if isinstance(data_tmp, Preprocessor.output_dict_type):
-            data_tmp = list(data_tmp.values())
-
-        if isinstance(data_tmp, list) and len(data_tmp) == 1:
-            data_tmp = data_tmp[0]
-
-        self.out_tmp = data_tmp
-        self._interpret_output(output)
-
-    def __getitem__(self, key):
-        return self._misc_dict[key]
-
-
-
-    def _interpret_input_pars(self, input_pars):
+    _interpret_input_pars = _interpret_input_pars
+    _check_output_shape   = _check_output_shape
+    
+    def __init__(self, data_pars):
+        self.input_pars                = data_pars['input_pars']
         
-        path = input_pars["path"]
-        path_type = input_pars.get("path_type", None)
-        if path_type is None:
-            if os.path.isfile(path):  path_type = "file"
-            if os.path.isdir(path):   path_type = "dir"
-                
-            if urlparse(path).scheme != "":
-                path_type = "url"
-                download_path = input_pars.get("download_path", "./")
-                
-            if path_type == "dropbox":
-                dropbox_download(path)
-                path_type = "file"
-                
-            if path_type is None:
-                raise UndeterminableLocationTypeError(path)
+        self.inter_output              = None
+        self.inter_output_split        = None
+        self.final_output              = None
+        self.final_output_split        = None
 
-        elif path_type != "file" and path_type != "dir" and path_type != "url":
-            raise UnknownLocationTypeError()
+        self.loader                    = data_pars.get('loader',{})
+        self.preprocessor              = data_pars.get('preprocessor',{})
+        self.split_xy                  = data_pars.get('split_xy',{})
+        self.split_train_test          = data_pars.get('split_train_test',{})
+        self.save_inter_output         = data_pars.get('save_inter_output',{})
+        self.output                    = data_pars.get('output',{})
+        self.data_pars                 = data_pars
+        
+               
+    def compute(self):
+        # Interpret input_pars
+        self._interpret_input_pars(self.input_pars)
 
-        file_type = input_pars.get("file_type", None)
-        if file_type is None:
-            if   path_type == "dir":   file_type = "image_dir"   #### THIS IS WRONG
-            elif path_type == "file":  file_type = os.path.splitext(path)[1]
-            else:
-                if path[-1] == "/":
-                    raise NonfileURLError()
-                file_type = os.path.splittext(path.split("/")[-1])[1]
-
-
-        self.path = path
-        self.path_type = path_type
-        self.file_type = file_type
-        self.test_size = input_pars.get("test_size", None)
-        self.generator = input_pars.get("generator", False)
-        if self.generator:
-                self.batch_size = int(input_pars.get("batch_size", 1))
-
-
-        self.X_cols = input_pars.get("X_cols", None)
-        self.y_cols = input_pars.get("y_cols", None)
-        self.misc_cols = input_pars.get("misc_cols", None)
-
-
-
-    def _load_data(self, loader):
-        data_loader = loader.get("data_loader", None)
-        if isinstance(data_loader, tuple):
-            loader_function = data_loader[0]
-            loader_args = data_loader[1]
-
+        # Delegate loading data
+        if self.loader == {}:
+            self.loader = self.default_loaders[self.file_type]
+        data_loader, data_loader_args, other_keys = load_callable_from_dict(
+            self.loader, return_other_keys=True
+        )
+        if other_keys.get("pass_data_pars", True):
+            loaded_data = data_loader(self.path, self.data_pars, **data_loader_args)
         else:
-            if data_loader is None:
-                try:
-                    data_loader = self.default_loaders[self.file_type]
-                except KeyError:
-                    raise UndeterminableDataLoaderError()
-            try:
-                loader_function, loader_args = load_callable_from_dict(data_loader)
-                assert callable(loader_function)
-            except:
-                raise InvalidDataLoaderFunctionError(data_loader)
+            loaded_data = data_loader(self.path, **data_loader_args)
 
-
-        if self.path_type == "file":
-            if self.generator:
-                if self.file_type == "csv":
-                    if loader_function == pd.read_csv:
-                        loader_args["chunksize"] = loader.get("chunksize", self.batch_size ) loader_arg = self.path
-
-
-        if self.path_type == "url":
-            if self.file_type == "csv" and loader_function == pd.read_csv:
-                data = loader_function(self.path, **loader_args)
-
-            else:
-                downloader = Downloader(url)
-                downloader.download(out_path)
-                filename = self.path.split("/")[-1]
-                loader_arg = out_path + "/" + filename
-
-
-        data = loader_function(loader_arg, **loader_args)
-        if self.path_type == "directory":
-            data = self._image_directory_load(self.path, self.generator)
-
-        if self.file_type == "npz" and loader_function == np.load:
-            data = [data[f] for f in data.files]
-
-        return data
-
-
-
-    def _image_directory_load(self, directory, generator):
-        # To be overridden by loaders, or possibly use Keras's ImageDataGenerator by default, as it's designed to be universal
-        pass
-
-
-
-    def _interpret_output(self, output):
-        max_len = output.get("out_max_len", None)
-        out_tmp = self.out_tmp
-        if max_len is not None:
-            try:
-                out_tmp = self.out_tmp[0:max_len]
-            except:
-                pass
-        shape = output.get("shape", None)
-        if shape is not None:
-            if isinstance(shape[0], list):
-                for s, o in zip(shape, out_tmp):
-                    if hasattr(o, "shape") and tuple(s) != o.shape:
-                        raise OutputShapeError(tuple(s), o.shape)
-            elif tuple(shape) != out_tmp.shape:
-                raise OutputShapeError(tuple(shape), out_tmp.shape)
-            self.output_shape = shape
-        path = output.get("path", None)
-
-
-        if isinstance(path, str):
-            path = [path]
-            out_tmp = [ out_tmp ]
-            """
-            if isinstance(out_tmp, np.ndarray):
-                np.save(path, out_tmp)
-
-            elif isinstance(out_tmp, pd.core.frame.DataFrame):
-                out_tmp.to_csv(path)
-
-            elif isinstance(out_tmp, list) and all([isinstance(x, np.ndarray) for x in out_tmp] ): 
-                np.savez(path, *out_tmp)
-
-            else:
-                pickle.dump(out_tmp, open(path, "wb"))
-            """
-
-        if isinstance(path, list):
-            for p, f in zip(path, out_tmp):
-                if isinstance(f, np.ndarray):
-                    np.save(p, self.f)
-
-                elif isinstance(f, pd.core.frame.DataFrame):
-                    f.to_csv(f)
-
-                elif isinstance(f, list) and all([isinstance(x, np.ndarray) for x in f] ): 
-                    np.savez(p, *f)
-                else:
-                    pickle.dump(f, open(p, "wb"))
-
-    def get_data(self):
-        return self.out_tmp
-
-
-class PyTorchDataLoader(AbstractDataLoader):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu"  ### Not automatic, user supplied please
-
-        if self.generator:
-            if isinstance(self.out_tmp, list) or isinstance(self.out_tmp, tuple ):
-                self.out_tmp = [ torchtext.data.Iterator(output, self.batch_size, device= device ) 
-                                 for output in self.out_tmp
-                               ]
-
-            else:
-                if isinstance(self.out_tmp, torchtext.data.Dataset ) or isinstance(self.out_tmp, torchtext.data.TabularDataset ):
-                    self.out_tmp = torchtext.data.Iterator(self.out_tmps, self.batch_size, device= device, )
-
-
-
-    #### Please transfer pre-processing code to preprocessor.py
-
-
-    def _load_data(self, loader):
-        # if loader is tabulardataset then assume its use. otherwise, assume that the loader's output is to be fed to dataset. change the split function.
-        if "torchtext_fields" in loader.keys():
-            self.val_split_function = [lambda x, test_size, **args: x.split(test_size, **args), "test_size", {}, ]
-            fields = []
-            field_vocab_args = {}
-
-
-            for field_pars in loader["torchtext_fields"]:
-                # process each field
-                field_types = {"Field": Field}
-                field_name  = field_pars["name"]
-                field_class = field_types[field_pars.get("type", "Field")]
-                field_args  = field_pars.get("args", {})
-
-
-                if "preprocessing" in field_pars.keys():
-                    processor, _ = load_callable_from_dict(field_pars["preprocessing"])
-                    field_args["preprocessing"] = Pipeline(processor)
-
-                if "postprocessing" in field_pars.keys():
-                    processor, _ = load_callable_from_dict(field_pars["postprocessing"])
-                    field_args["postprocessing"] = Pipeline(processor)
-
-                if "tokenize" in field_pars.keys():
-                    tokenizer, _ = load_callable_from_dict(field_pars["tokenize"])
-                    field_args["tokenize"] = tokenizer
-
-                field = field_class(**field_args)
-                fields.append((field_name, field))
-                field_vocab_args[field_name] = field_pars.get("vocab_args", {})
-
-
-            loader_function = None
-            if "data_loader" in loader.keys():
-                data_loader = loader["data_loader"]
-                loader_function, loader_args = load_callable_from_dict(data_loader)
-
-                if loader_function != torchtext.data.TabularDataset:
-                    data = torchtext.data.Dataset(
-                        super(PyTorchDataLoader, self)._load_data(loader),
-                        fields,
-                        **loader_args,
-                    )
-                else:
-                    loader_args["fields"] = fields
-                    loader_args["format"] = "csv"
-                    loader_args["skip_header"] = True
-                    loader = loader.copy()
-                    loader["data_loader"] = (torchtext.data.TabularDataset, arg_dict)
-                    data = super(PyTorchDataLoader, self)._load_data(loader)
-
-            else:
-                loader = loader.copy()
-                loader["data_loader"] = (torchtext.data.TabularDataset, {"fields": fields, "format": "csv", "skip_header": True}, ) 
-                data = super(PyTorchDataLoader, self)._load_data(loader)
-
- 
-            ##### NO Specialized code
-            for f in fields:
-                f[1].build_vocab(data, **field_vocab_args[f[0]])
-
-            return data
+        # Delegate data preprocessing
+        if self.preprocessor == {}:
+            self.inter_output = loaded_data
         else:
-            return super(PyTorchDataLoader, self)._load_data(self, loader)
-
-    def _interpret_output(self, output):
-        # if the intermediate data is a torch Dataset or Iterator, handle special logic. otherwise, default.
-        super(PyTorchDataLoader, self)._interpret_output(output)
-
-
-
-
-
-
-
-
-
-
+            (
+                preprocessor_class,
+                preprocessor_class_args,
+                other_keys,
+            ) = load_callable_from_dict(self.preprocessor, return_other_keys=True)
+            if other_keys.get("pass_data_pars", True):
+                self.preprocessor = preprocessor_class(
+                    self.data_pars, **preprocessor_class_args
+                )
+            else:
+                preprocessor = preprocessor_class(**preprocessor_class_args)
+            preprocessor.compute(loaded_data)
+            self.inter_output = preprocessor.get_data()
 
 
+        # Delegate data splitting
+        if self.split_xy != {}:
+            split_xy, split_xy_args, other_keys = load_callable_from_dict(self.split_xy,return_other_keys=True)
+            if other_keys.get('pass_data_pars', True):
+                self.inter_output = split_xy(self.inter_output,self.data_pars,**split_xy_args)
+            else:
+                self.inter_output = split_xy(self.inter_output,**split_xy_args)
+                
+        # Check output shape, trim to max_len
+        shape = self.output.get('shape', None)
+        max_len = self.output.get('max_len',None)
+        self.inter_output = self._check_output_shape(self.inter_output,shape,max_len)
+        
+        # Delegate train-test splitting
+        if self.split_train_test != {}:
+            outputs_to_split = self.inter_output if self.col_miscinput is None else self.inter_output[:-1]
+            split_train_test, split_train_test_args, other_keys = load_callable_from_dict(self.split_train_test, return_other_keys=True)
+            if 'testsize_keyword' in other_keys.keys():
+                split_train_test_args[other_keys.get('testsize_keyword','test_size')] = self.test_size
+            if other_keys.get('pass_data_pars', True):
+                split_out = split_train_test(*outputs_to_split, self.data_pars, **split_train_test_args)
+            else:
+                split_out = split_train_test(*outputs_to_split, **split_train_test_args)
+            i = len(self.inter_output)
+            self.inter_output_split = (split_out[0:i], split_out[i:])
+            if self.col_miscinput is not None:
+                self.inter_output_split = self.inter_output_split + ([self.inter_output[-1]],) #add back misc outputs
+            else:
+                self.inter_output_split = self.inter_output_split + ([],)
+        
+                
+        # Delegate output saving
+        if self.save_inter_output != {}:
+            if self.inter_output_split is None:
+                outputs_to_save = self.inter_output
+            else:
+                outputs_to_save = self.inter_output_split
+            path = self.save_inter_output['path']
+            save_inter_output, save_inter_output_args, other_keys = load_callable_from_dict(self.save_inter_output['save_function'], return_other_keys=True)
+            if other_keys.get('pass_data_pars', True):
+                save_inter_output(outputs_to_save,path,self.data_pars,**save_inter_output_args)
+            else:
+                save_inter_output(outputs_to_save,path,**save_inter_output_args)
+        
+        # Delegate output formatting
+        format_dict = self.output.get('format_func',{})
+        format_func = lambda x: x
+        if format_dict != {}:
+            format_func, format_func_args, other_keys = load_callable_from_dict(
+                format_dict, return_other_keys=True
+            )
+            if other_keys.get("pass_data_pars", True):
+                format_func = partial(
+                    format_func, data_pars=self.data_pars, **format_func_args
+                )
+            else:
+                format_func = partial(format_func, **format_func_args)
+        if self.split_train_test != {}:
+            self.final_output_split = tuple(
+                format_func(o) for o in self.inter_output_split
+            )
+        else:
+            self.final_output = format_func(self.inter_output)
 
 
+    def get_data(self, intermediate=False):
+        if intermediate or self.final_output is None:
+            if self.inter_output_split is not None:
+                return (
+                    *self.inter_output_split[0],
+                    *self.inter_output_split[1],
+                    *self.inter_output_split[2],
+                )
+            
+            if isinstance(self.inter_output, dict):
+                return tuple(self.inter_output.values())
+            return self.inter_output
+
+        if self.final_output_split is not None:
+            return (
+                *self.final_output_split[0],
+                *self.final_output_split[1],
+                *self.final_output_split[2],
+            )
+        return self.final_output
 
 
-
-
-
-class TensorflowDataLoader(AbstractDataLoader):
-    def __init__(self, *args, **kwargs):
-        super(TensorflowDataLoader, self).__init__(*args, **kwargs)
-        # Create a tf.data.Dataset object
-
-
-class KerasDataLoader(AbstractDataLoader):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Create a model.fit_generator-compatible generator
-
-
-
-
-
-class GluonTSDataLoader(AbstractDataLoader):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-
-###functions for the example JSON tests
-
-# namentity_crm_bilstm_dataloader
-
+### Test functions
+def split_xy_from_dict(out,data_pars):
+    X_c    = data_pars['input_pars'].get('col_Xinput',[])
+    y_c    = data_pars['input_pars'].get('col_yinput',[])
+    misc_c = data_pars['input_pars'].get('col_miscinput',[])
+    X      = [out[n] for n in X_c]
+    y      = [out[n] for n in y_c]
+    misc   = [out[n] for n in misc_c]
+    return (*X,*y,*misc)
 
 
 if __name__ == "__main__":
     from models import test_module
 
-    # param_pars = {
-    #    "choice": "json",
-    #    "config_mode": "test",
-    #    "data_path": f"dataset/json_/namentity_crm_bilstm_dataloader.json",
-    # }
-
-    # test_module("model_keras/namentity_crm_bilstm_dataloader.py", param_pars)
+    param_pars = {
+        "choice": "json",
+        "config_mode": "test",
+        "data_path": "dataset/json/refactor/03_nbeats_dataloader.json",
+    }
+    test_module("model_tch/03_nbeats_dataloader.py", param_pars)
 
     param_pars = {
         "choice": "json",
         "config_mode": "test",
-        "data_path": f"dataset/json_/textcnn_dataloader.json",
+        "data_path": "dataset/json/refactor/namentity_crm_bilstm_dataloader.json",
     }
-    test_module("model_tch/textcnn_dataloader.py", param_pars)
-
-
-
+    test_module("model_keras/namentity_crm_bilstm_dataloader.py", param_pars)

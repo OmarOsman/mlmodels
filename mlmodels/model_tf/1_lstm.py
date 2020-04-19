@@ -16,9 +16,15 @@ from mlmodels.util import os_package_root_path, log, params_json_load, path_norm
 
 
 
+### Tf 2.0
+tf.compat.v1.disable_v2_behavior()
+
+
+
+
 simplefilter(action='ignore', category=FutureWarning)
 simplefilter(action='ignore', category=DeprecationWarning)
-tf.get_logger().setLevel('ERROR')
+tf.compat.v1.get_logger().setLevel('ERROR')
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'  # **** change the warning level ****
 
 
@@ -30,7 +36,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'  # **** change the warning level ****
 ####################################################################################################
 class Model:
     def __init__(self, model_pars=None, data_pars=None, compute_pars=None, **kwargs):
-        tf.reset_default_graph()
+        reset_model()
 
         epoch         = model_pars.get('epoch', 5)
         learning_rate = model_pars.get('learning_rate', 0.001)
@@ -48,30 +54,31 @@ class Model:
         self.stats = {"loss": 0.0,
                       "loss_history": []}
 
-        self.X = tf.placeholder(tf.float32, (None, None, size))
-        self.Y = tf.placeholder(tf.float32, (None, output_size))
+        self.X = tf.compat.v1.placeholder(tf.compat.v1.float32, (None, None, size))
+        self.Y = tf.compat.v1.placeholder(tf.compat.v1.float32, (None, output_size))
 
         ### Model Structure        ################################
         self.timestep = timestep
         self.hidden_layer_size = num_layers * 2 * size_layer
 
         def lstm_cell(size_layer):
-            return tf.nn.rnn_cell.LSTMCell(size_layer, state_is_tuple=False)
+            return tf.compat.v1.nn.rnn_cell.LSTMCell(size_layer, state_is_tuple=False)
 
-        rnn_cells = tf.nn.rnn_cell.MultiRNNCell(
+        rnn_cells = tf.compat.v1.nn.rnn_cell.MultiRNNCell(
             [lstm_cell(size_layer) for _ in range(num_layers)], state_is_tuple=False
         )
 
-        drop = tf.contrib.rnn.DropoutWrapper(rnn_cells, output_keep_prob=forget_bias)
+        ## drop = tf.compat.v1.contrib.rnn.DropoutWrapper(rnn_cells, output_keep_prob=forget_bias)
+        drop = tf.compat.v1.nn.rnn_cell.DropoutWrapper(rnn_cells, output_keep_prob=forget_bias)
 
-        self.hidden_layer = tf.placeholder(tf.float32, (None, self.hidden_layer_size))
-        self.outputs, self.last_state = tf.nn.dynamic_rnn(
-            drop, self.X, initial_state=self.hidden_layer, dtype=tf.float32
+        self.hidden_layer = tf.compat.v1.placeholder(tf.compat.v1.float32, (None, self.hidden_layer_size))
+        self.outputs, self.last_state = tf.compat.v1.nn.dynamic_rnn(
+            drop, self.X, initial_state=self.hidden_layer, dtype=tf.compat.v1.float32
         )
-        self.logits = tf.layers.dense(self.outputs[-1], output_size)
+        self.logits = tf.compat.v1.layers.dense(self.outputs[-1], output_size)
 
         ### Loss    ##############################################
-        self.cost = tf.reduce_mean(tf.square(self.Y - self.logits))
+        self.cost = tf.compat.v1.reduce_mean(tf.compat.v1.square(self.Y - self.logits))
         self.optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate).minimize(self.cost)
 
 
@@ -82,7 +89,7 @@ def fit(model, data_pars=None, compute_pars=None,  out_pars=None, **kwarg):
     nlog_freq = compute_pars.get("nlog_freq", 100)
 
     ######################################################################
-    # sess = tf.compat.v1.InteractiveSession()
+    # sess = tf.compat.v1.compat.v1.InteractiveSession()
     sess = tf.compat.v1.Session()
     sess.run(tf.compat.v1.global_variables_initializer())
     for i in range(model.epoch):

@@ -25,45 +25,23 @@ import_data_tch( name="", mode="train", node_id=0, data_folder_root="",  )
 
 mlmodels\dataloader.py
 ----------------methods----------------
-AbstractDataLoader.__init__(self, input_pars, loader, preprocessor, output,   )
+AbstractDataLoader.__getitem__(self, key,   )
+AbstractDataLoader.__init__(self, input_pars, loader, preprocessor, output,   **args)
 AbstractDataLoader._image_directory_load(self, directory, generator,   )
 AbstractDataLoader._interpret_input_pars(self, input_pars,   )
 AbstractDataLoader._interpret_output(self, output,   )
-AbstractDataLoader._interpret_processor(self, preprocessor, data,   )
 AbstractDataLoader._load_data(self, loader,   )
-AbstractDataLoader._preprocessor(self, data, pars,   )
-AbstractDataLoader.preprocess_new_data(self, data,   )
-EncoderMissingEncoderError.__init__(self, encoder_pars,   )
-EncoderMissingIndexError.__init__(self, encoder_pars,   )
+AbstractDataLoader.get_data(self,   )
 GluonTSDataLoader.__init__(self,   *args, **kwargs)
-InvalidDataLoaderFunctionError.__init__(self, loader,   )
-InvalidDataPreprocessorError.__init__(self, preprocessor,   )
-InvalidDataPreprocessorParameterError.__init__(self, parameter,   )
-InvalidEncoderError.__init__(self, preprocessor,   )
-InvalidEncoderParameterError.__init__(self, parameter,   )
 KerasDataLoader.__init__(self,   *args, **kwargs)
-MissingDataPreprocessorError.__init__(self,   )
-MissingLocationKeyError.__init__(self,   )
-NonCallableDataPreprocessorError.__init__(self, preprocessor,   )
-NonCallableEncoderError.__init__(self, preprocessor,   )
-NonIntegerBatchSizeError.__init__(self,   )
-NonfileURLError.__init__(self,   )
-NumpyGeneratorError.__init__(self,   )
-OutputShapeError.__init__(self, specified, actual,   )
-PreprocssingOutputDict.__getitem__(self, key,   )
-PreprocssingOutputDict.__init__(self,   *args, **kwargs)
-PreprocssingOutputDict.__repr__(self,   )
-PreprocssingOutputDict.__setitem__(self, key, value,   )
-PreprocssingOutputDict.__str__(self,   )
-PreprocssingOutputDict.values(self,   )
 PyTorchDataLoader.__init__(self,   *args, **kwargs)
+PyTorchDataLoader._interpret_output(self, output,   )
+PyTorchDataLoader._load_data(self, loader,   )
 TensorflowDataLoader.__init__(self,   *args, **kwargs)
-UndeterminableDataLoaderError.__init__(self,   )
-UndeterminableLocationTypeError.__init__(self,   )
-UnknownLocationTypeError.__init__(self, location_type,   )
 
 ---------------functions---------------
-load_function(f,   )
+open_read(file,   )
+pickle_load(file,   )
 
 
 mlmodels\distri_torch.py
@@ -162,6 +140,29 @@ save_model(model, path,   )
 test( data_path="/dataset/", pars_choice="colnum",  )
 
 
+mlmodels\preprocessor.py
+----------------methods----------------
+EncoderMissingEncoderError.__init__(self, encoder_pars,   )
+EncoderMissingIndexError.__init__(self, encoder_pars,   )
+EncoderOutputSizeError.__init__(self, output_name, output_size,   )
+MissingDataPreprocessorError.__init__(self,   )
+Preprocessor.__init__(self, preprocessor_dict,   )
+Preprocessor._interpret_encoder(self, encoder_pars,   )
+Preprocessor._interpret_preprocessor(self, pars,   )
+Preprocessor._interpret_preprocessor_dict(self, preprocessor_dict,   )
+Preprocessor.fit_transform(self, data,   )
+Preprocessor.transform(self, data,   )
+PreprocessorNotFittedError.__init__(self,   )
+PreprocssingOutputDict.__getitem__(self, key,   )
+PreprocssingOutputDict.__init__(self, data,   *args, **kwargs)
+PreprocssingOutputDict.__repr__(self,   )
+PreprocssingOutputDict.__setitem__(self, key, value,   )
+PreprocssingOutputDict.__str__(self,   )
+PreprocssingOutputDict.values(self,   )
+
+---------------functions---------------
+
+
 mlmodels\util.py
 ----------------methods----------------
 Model_empty.__init__(self,  model_pars=None, data_pars=None, compute_pars=None,  )
@@ -177,11 +178,14 @@ env_build(model_uri, env_pars,   )
 env_conda_build( env_pars=None,  )
 env_pip_check( env_pars=None,  )
 env_pip_requirement( env_pars=None,  )
+get_device_torch(  )
 get_model_uri(file,   )
 get_recursive_files(folderPath,  ext='/*model*/*.py',  )
 get_recursive_files2(folderPath, ext,   )
 get_recursive_files3(folderPath, ext,   )
 load(load_pars,   )
+load_callable_from_dict(function_dict,   )
+load_callable_from_uri(uri,   )
 load_config(args, config_file, config_mode,  verbose=0,  )
 load_gluonts( load_pars=None,  )
 load_keras(load_pars,  custom_pars=None,  )
@@ -190,14 +194,13 @@ load_tch(load_pars,   )
 load_tch_checkpoint(model, optimiser, load_pars,   )
 load_tf( load_pars="",  )
 log( n=0, m=1,  *s)
-metrics_eval( metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypred_proba=None,  )
 model_get_list( folder=None, block_list=[],  )
 os_file_current_path(  )
 os_folder_copy(src, dst,   )
 os_get_file( folder=None, block_list=[], pattern=r'*.py',  )
 os_package_root_path( filepath="", sublevel=0, path_add="",  )
 os_path_split(path,   )
-params_json_load(path,  config_mode="test",  )
+params_json_load(path,  config_mode="test", tlist=[ "model_pars", "data_pars", "compute_pars", "out_pars"],  )
 path_norm( path="",  )
 path_norm_dict(ddict,   )
 save( model=None, session=None, save_pars=None,  )
@@ -237,7 +240,7 @@ cli_load_arguments( config_file=None,  )
 main(  )
 os_file_current_path(  )
 test_all( arg=None,  )
-test_all( arg=None,  )
+test_benchmark( arg=None,  )
 test_custom(  )
 test_import(arg,   )
 test_json(arg,   )
@@ -267,6 +270,18 @@ mlmodels\__init__.py
 
 
 mlmodels\config\json\model_tch\raw\vae_pretraining_encoder\text_beta.py
+----------------methods----------------
+
+---------------functions---------------
+
+
+mlmodels\example\arun_hyper.py
+----------------methods----------------
+
+---------------functions---------------
+
+
+mlmodels\example\arun_model.py
 ----------------methods----------------
 
 ---------------functions---------------
@@ -992,7 +1007,7 @@ Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None,  )
 ---------------functions---------------
 fit( model=None, data_pars={}, compute_pars={}, out_pars={},  **kw)
 fit_metrics(model,  data_pars=None, compute_pars=None, out_pars=None, model_pars=None,  **kw)
-get_dataset(data_params,   )
+get_dataset(data_pars,   )
 get_params( param_pars={},  **kw)
 load( load_pars={},  **kw)
 metrics_plot(metrics_params,   )
@@ -1059,6 +1074,22 @@ _preprocess_test(data_pars,   **kw)
 fit(model,  data_pars=None, compute_pars=None, out_pars=None,  **kw)
 fit_metrics(model,  data_pars=None, compute_pars=None, out_pars=None,  **kw)
 get_dataset(data_pars,   **kw)
+get_params( param_pars={},  **kw)
+load(load_pars,   )
+predict(model,  sess=None, data_pars=None, out_pars=None, compute_pars=None,  **kw)
+reset_model(  )
+save( model=None, session=None, save_pars=None,  )
+test( data_path="dataset/", pars_choice="json", config_mode="test",  )
+
+
+mlmodels\model_keras\namentity_crm_bilstm_dataloader.py
+----------------methods----------------
+Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None,  **kwargs)
+
+---------------functions---------------
+fit(model,  data_pars=None, compute_pars=None, out_pars=None,  **kw)
+fit_metrics(model,  data_pars=None, compute_pars=None, out_pars=None,  **kw)
+get_dataset(data_pars,  return_preprocessor_function=False,  )
 get_params( param_pars={},  **kw)
 load(load_pars,   )
 predict(model,  sess=None, data_pars=None, out_pars=None, compute_pars=None,  **kw)
@@ -2605,6 +2636,23 @@ Model.forward(self, x,   )
 ---------------functions---------------
 
 
+mlmodels\model_tch\Autokeras.py
+----------------methods----------------
+Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None, out_pars=None,  )
+
+---------------functions---------------
+fit(model,  data_pars=None, compute_pars=None, out_pars=None,  **kwargs)
+fit_metrics(model,  data_pars=None, compute_pars=None, out_pars=None,  )
+get_config_file(  )
+get_dataset( data_pars=None,  )
+get_dataset_imbd(data_pars,   )
+get_params( param_pars=None,  **kw)
+load(load_pars,   )
+predict(model,  session=None, data_pars=None, compute_pars=None, out_pars=None,  )
+save(model,  session=None, save_pars=None,  )
+test( data_path="dataset/", pars_choice="json", config_mode="test",  )
+
+
 mlmodels\model_tch\matchzoo_models.py
 ----------------methods----------------
 Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None, out_pars=None,  )
@@ -2624,6 +2672,8 @@ test( data_path="dataset/", pars_choice="json", config_mode="test",  )
 
 mlmodels\model_tch\nbeats.py
 ----------------methods----------------
+Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None,  )
+Model.split(arr, size,   )
 
 ---------------functions---------------
 data_generator(x_full, y_full, bs,   )
@@ -2639,7 +2689,7 @@ plot_predict(x_test, y_test, p, data_pars, compute_pars, out_pars,   )
 predict(model,  data_pars=None, compute_pars=None, out_pars=None,  **kw)
 save(model, session, save_pars,   )
 save_checkpoint(model, optimiser, grad_step,  CHECKPOINT_NAME="mycheckpoint",  )
-test( data_path="dataset/milk.csv",  )
+test( choice="json", data_path="nbeats.json", config_mode="test",  )
 
 
 mlmodels\model_tch\pplm.py
@@ -2652,6 +2702,21 @@ get_dataset( data_pars=None,  **kw)
 get_params( param_pars=None,  **kw)
 path_setup( out_folder="", sublevel=0, data_path="dataset/",  )
 predict(model,  sess=None, data_pars=None, compute_pars=None, out_pars=None,  **kw)
+
+
+mlmodels\model_tch\pytorch_vae.py
+----------------methods----------------
+Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None, out_pars=None,  )
+
+---------------functions---------------
+fit(model,  data_pars=None, compute_pars=None, out_pars=None,  **kwargs)
+fit_metrics(model,  data_pars=None, compute_pars=None, out_pars=None,  )
+get_dataset( data_pars=None,  **kw)
+get_params( param_pars=None,  **kw)
+load(load_pars,   )
+predict(model,  session=None, data_pars=None, compute_pars=None, out_pars=None, imax=1, return_ytrue=1,  )
+save(model,  session=None, save_pars=None,  )
+test( data_path="dataset/", pars_choice="json", config_mode="test",  )
 
 
 mlmodels\model_tch\textcnn.py
@@ -2682,6 +2747,29 @@ split_train_valid(path_data, path_train, path_valid,  frac=0.7,  )
 test( data_path="dataset/", pars_choice="json", config_mode="test",  )
 
 
+mlmodels\model_tch\textcnn_dataloader.py
+----------------methods----------------
+Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None,  )
+TextCNN.__init__(self,  model_pars=None, data_pars=None, compute_pars=None,  **kwargs)
+TextCNN.forward(self, x,   )
+TextCNN.rebuild_embed(self, vocab_built,   )
+
+---------------functions---------------
+_get_device(  )
+_train(m, device, train_itr, optimizer, epoch, max_epoch,   )
+_valid(m, device, test_itr,   )
+fit(model,  data_pars=None, compute_pars=None, out_pars=None,  **kwargs)
+fit_metrics(model,  data_pars=None, compute_pars=None, out_pars=None,  **kwargs)
+get_config_file(  )
+get_data_file(  )
+get_dataset( data_pars=None, out_pars=None, return_preprocessor_function=False,  **kwargs)
+get_params( param_pars=None,  **kw)
+load( load_pars=None,  )
+predict(model,  session=None, data_pars=None, compute_pars=None, out_pars=None,  )
+save(model,  session=None, save_pars=None,  )
+test( data_path="dataset/", pars_choice="json", config_mode="test",  )
+
+
 mlmodels\model_tch\torchhub.py
 ----------------methods----------------
 Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None, out_pars=None,  )
@@ -2697,9 +2785,10 @@ get_dataset( data_pars=None,  **kw)
 get_dataset_mnist_torch(data_pars,   )
 get_params( param_pars=None,  **kw)
 load(load_pars,   )
-predict(model,  session=None, data_pars=None, compute_pars=None, out_pars=None,  )
+predict(model,  session=None, data_pars=None, compute_pars=None, out_pars=None, imax=1, return_ytrue=1,  )
 save(model,  session=None, save_pars=None,  )
 test( data_path="dataset/", pars_choice="json", config_mode="test",  )
+test2( data_path="dataset/", pars_choice="json", config_mode="test",  )
 
 
 mlmodels\model_tch\transformer_classifier.py
@@ -4169,6 +4258,419 @@ Generator.forward(self, z,   )
 
 ---------------functions---------------
 compute_gradient_penalty(D, real_samples, fake_samples,   )
+
+
+mlmodels\model_tch\raw\pytorch_vae\experiment.py
+----------------methods----------------
+VAEXperiment.__init__(self, vae_model,   )
+VAEXperiment.configure_optimizers(self,   )
+VAEXperiment.data_transforms(self,   )
+VAEXperiment.sample_images(self,   )
+VAEXperiment.train_dataloader(self,   )
+VAEXperiment.val_dataloader(self,   )
+VAEXperiment.validation_end(self, outputs,   )
+VAEXperiment.validation_step(self, batch, batch_idx,  optimizer_idx=0,  )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\run.py
+----------------methods----------------
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\utils.py
+----------------methods----------------
+
+---------------functions---------------
+data_loader(fn,   )
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\base.py
+----------------methods----------------
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\betatc_vae.py
+----------------methods----------------
+BetaTCVAE.__init__(self, in_channels,   )
+BetaTCVAE.encode(self, input,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\beta_vae.py
+----------------methods----------------
+BetaVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\cat_vae.py
+----------------methods----------------
+CategoricalVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\cvae.py
+----------------methods----------------
+ConditionalVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\dfcvae.py
+----------------methods----------------
+DFCVAE.__init__(self, in_channels,   )
+DFCVAE.encode(self, input,   )
+DFCVAE.loss_function(self,   *args, **kwargs)
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\dip_vae.py
+----------------methods----------------
+DIPVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\fvae.py
+----------------methods----------------
+FactorVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\gamma_vae.py
+----------------methods----------------
+GammaVAE.I_function(self, a, b, c, d,   )
+GammaVAE.__init__(self, in_channels,   )
+GammaVAE.encode(self, input,   )
+GammaVAE.loss_function(self,   *args, **kwargs)
+GammaVAE.vae_gamma_kl_loss(self, a, b, c, d,   )
+GammaVAE.weight_init(self,   )
+
+---------------functions---------------
+init_(m,   )
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\hvae.py
+----------------methods----------------
+HVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\info_vae.py
+----------------methods----------------
+InfoVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\iwae.py
+----------------methods----------------
+IWAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\joint_vae.py
+----------------methods----------------
+JointVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\logcosh_vae.py
+----------------methods----------------
+LogCoshVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\lvae.py
+----------------methods----------------
+EncoderBlock.__init__(self, in_channels,   )
+LVAE.__init__(self, in_channels,   )
+LVAE.encode(self, input,   )
+LVAE.merge_gauss(self, mu_1,   )
+LadderBlock.__init__(self, in_channels,   )
+
+---------------functions---------------
+conv_out_shape(img_size,   )
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\miwae.py
+----------------methods----------------
+MIWAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\mssim_vae.py
+----------------methods----------------
+MSSIM.__init__(self, in_channels,   )
+MSSIM.ssim(self, img1,   )
+MSSIMVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\swae.py
+----------------methods----------------
+SWAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\twostage_vae.py
+----------------methods----------------
+TwoStageVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\types_.py
+----------------methods----------------
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\vampvae.py
+----------------methods----------------
+VampVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\vanilla_vae.py
+----------------methods----------------
+VanillaVAE.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\vq_vae.py
+----------------methods----------------
+ResidualLayer.__init__(self, in_channels,   )
+VQVAE.__init__(self, in_channels,   )
+VectorQuantizer.__init__(self, num_embeddings,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\wae_mmd.py
+----------------methods----------------
+WAE_MMD.__init__(self, in_channels,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\models\__init__.py
+----------------methods----------------
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\bvae.py
+----------------methods----------------
+TestVAE.setUp(self,   )
+TestVAE.test_forward(self,   )
+TestVAE.test_loss(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_betatcvae.py
+----------------methods----------------
+TestBetaTCVAE.setUp(self,   )
+TestBetaTCVAE.test_forward(self,   )
+TestBetaTCVAE.test_generate(self,   )
+TestBetaTCVAE.test_loss(self,   )
+TestBetaTCVAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_cat_vae.py
+----------------methods----------------
+TestVAE.setUp(self,   )
+TestVAE.test_forward(self,   )
+TestVAE.test_loss(self,   )
+TestVAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_dfc.py
+----------------methods----------------
+TestDFCVAE.setUp(self,   )
+TestDFCVAE.test_forward(self,   )
+TestDFCVAE.test_loss(self,   )
+TestDFCVAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_dipvae.py
+----------------methods----------------
+TestDIPVAE.setUp(self,   )
+TestDIPVAE.test_forward(self,   )
+TestDIPVAE.test_generate(self,   )
+TestDIPVAE.test_loss(self,   )
+TestDIPVAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_fvae.py
+----------------methods----------------
+TestFAE.setUp(self,   )
+TestFAE.test_forward(self,   )
+TestFAE.test_loss(self,   )
+TestFAE.test_optim(self,   )
+TestFAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_gvae.py
+----------------methods----------------
+TestGammaVAE.setUp(self,   )
+TestGammaVAE.test_forward(self,   )
+TestGammaVAE.test_loss(self,   )
+TestGammaVAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_hvae.py
+----------------methods----------------
+TestHVAE.setUp(self,   )
+TestHVAE.test_forward(self,   )
+TestHVAE.test_loss(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_iwae.py
+----------------methods----------------
+TestIWAE.setUp(self,   )
+TestIWAE.test_forward(self,   )
+TestIWAE.test_loss(self,   )
+TestIWAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_joint_Vae.py
+----------------methods----------------
+TestVAE.setUp(self,   )
+TestVAE.test_forward(self,   )
+TestVAE.test_loss(self,   )
+TestVAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_logcosh.py
+----------------methods----------------
+TestVAE.setUp(self,   )
+TestVAE.test_forward(self,   )
+TestVAE.test_loss(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_lvae.py
+----------------methods----------------
+TestLVAE.setUp(self,   )
+TestLVAE.test_forward(self,   )
+TestLVAE.test_loss(self,   )
+TestLVAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_miwae.py
+----------------methods----------------
+TestMIWAE.setUp(self,   )
+TestMIWAE.test_forward(self,   )
+TestMIWAE.test_generate(self,   )
+TestMIWAE.test_loss(self,   )
+TestMIWAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_mssimvae.py
+----------------methods----------------
+TestMSSIMVAE.setUp(self,   )
+TestMSSIMVAE.test_forward(self,   )
+TestMSSIMVAE.test_loss(self,   )
+TestMSSIMVAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_swae.py
+----------------methods----------------
+TestSWAE.setUp(self,   )
+TestSWAE.test_forward(self,   )
+TestSWAE.test_loss(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_vae.py
+----------------methods----------------
+TestVAE.setUp(self,   )
+TestVAE.test_forward(self,   )
+TestVAE.test_loss(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_vq_vae.py
+----------------methods----------------
+TestVQVAE.setUp(self,   )
+TestVQVAE.test_forward(self,   )
+TestVQVAE.test_generate(self,   )
+TestVQVAE.test_loss(self,   )
+TestVQVAE.test_sample(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\test_wae.py
+----------------methods----------------
+TestWAE.setUp(self,   )
+TestWAE.test_forward(self,   )
+TestWAE.test_loss(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\text_cvae.py
+----------------methods----------------
+TestCVAE.setUp(self,   )
+TestCVAE.test_loss(self,   )
+
+---------------functions---------------
+
+
+mlmodels\model_tch\raw\pytorch_vae\tests\text_vamp.py
+----------------methods----------------
+TestVVAE.setUp(self,   )
+TestVVAE.test_forward(self,   )
+TestVVAE.test_loss(self,   )
+
+---------------functions---------------
 
 
 mlmodels\model_tch\raw\textcnn\dataset.py
@@ -12196,6 +12698,18 @@ has_arg(fn, name,  accept_all=False,  )
 layer_test(layer_cls,  kwargs={}, input_shape=None, input_dtype=None, input_data=None, expected_output=None, expected_output_dtype=None, fixed_batch_size=False, supports_masking=False,  )
 
 
+mlmodels\preprocess\torch_text_cnn.py
+----------------methods----------------
+
+---------------functions---------------
+clean_str(string,   )
+imdb_spacy_tokenizer(text,  lang="en",  )
+test_onehot_sentences(data, max_len,   )
+test_pandas_fillna(data,   **args)
+test_word_categorical_labels_per_sentence(data, max_len,   )
+test_word_count(data,   )
+
+
 mlmodels\preprocess\__init__.py
 ----------------methods----------------
 
@@ -12264,4 +12778,18 @@ predict(model, sess,  data_pars=None, out_pars=None, compute_pars=None, get_hidd
 reset_model(  )
 test( data_path="dataset/GOOG-year.csv", out_path="", reset=True,  )
 test2( data_path="dataset/GOOG-year.csv",  )
+
+
+mlmodels\ztest\benchmark3.py
+----------------methods----------------
+
+---------------functions---------------
+benchmark_run( bench_pars=None, args=None, config_mode="test",  )
+benchmark_run_mnist( bench_pars=None, args=None, config_mode="test",  )
+cli_load_arguments( config_file=None,  )
+config_model_list( folder=None,  )
+get_all_json_path(json_path,   )
+main(  )
+metric_eval( actual=None, pred=None, metric_name="mean_absolute_error",  )
+preprocess_timeseries_m5( data_path=None, dataset_name=None, pred_length=10, item_id=None,  )
 

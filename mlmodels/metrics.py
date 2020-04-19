@@ -19,7 +19,7 @@ def log(*s, n=0, m=1):
 
 
 ####################################################################################################
-def metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypred_proba=None):
+def metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypred_proba=None, return_dict=0):
     """
         ytrue = np.random.randint(0,2, 10)
         ypred = np.random.randint(0,5, 10)
@@ -146,6 +146,8 @@ def metrics_eval(metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypr
 
       mdict["metric_name"].append(metric_name)
       mdict["metric_val"].append(mval)
+
+    
 
     mdict = pd.DataFrame(mdict)
     return mdict

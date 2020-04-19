@@ -110,7 +110,11 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
-[AbstractDataLoader.__init__(self, input_pars, loader, preprocessor, output,   )
+[AbstractDataLoader.__getitem__(self, key,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
+)
+
+[AbstractDataLoader.__init__(self, input_pars, loader, preprocessor, output,   **args)
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
@@ -126,27 +130,11 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
-[AbstractDataLoader._interpret_processor(self, preprocessor, data,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
 [AbstractDataLoader._load_data(self, loader,   )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
-[AbstractDataLoader._preprocessor(self, data, pars,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[AbstractDataLoader.preprocess_new_data(self, data,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[EncoderMissingEncoderError.__init__(self, encoder_pars,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[EncoderMissingIndexError.__init__(self, encoder_pars,   )
+[AbstractDataLoader.get_data(self,   )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
@@ -154,83 +142,7 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
-[InvalidDataLoaderFunctionError.__init__(self, loader,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[InvalidDataPreprocessorError.__init__(self, preprocessor,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[InvalidDataPreprocessorParameterError.__init__(self, parameter,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[InvalidEncoderError.__init__(self, preprocessor,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[InvalidEncoderParameterError.__init__(self, parameter,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
 [KerasDataLoader.__init__(self,   *args, **kwargs)
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[MissingDataPreprocessorError.__init__(self,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[MissingLocationKeyError.__init__(self,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[NonCallableDataPreprocessorError.__init__(self, preprocessor,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[NonCallableEncoderError.__init__(self, preprocessor,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[NonIntegerBatchSizeError.__init__(self,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[NonfileURLError.__init__(self,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[NumpyGeneratorError.__init__(self,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[OutputShapeError.__init__(self, specified, actual,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[PreprocssingOutputDict.__getitem__(self, key,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[PreprocssingOutputDict.__init__(self,   *args, **kwargs)
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[PreprocssingOutputDict.__repr__(self,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[PreprocssingOutputDict.__setitem__(self, key, value,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[PreprocssingOutputDict.__str__(self,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[PreprocssingOutputDict.values(self,   )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
@@ -238,19 +150,15 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
+[PyTorchDataLoader._interpret_output(self, output,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
+)
+
+[PyTorchDataLoader._load_data(self, loader,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
+)
+
 [TensorflowDataLoader.__init__(self,   *args, **kwargs)
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[UndeterminableDataLoaderError.__init__(self,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[UndeterminableLocationTypeError.__init__(self,   )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
-)
-
-[UnknownLocationTypeError.__init__(self, location_type,   )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
@@ -262,7 +170,11 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
-[load_function(f,   )
+[open_read(file,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
+)
+
+[pickle_load(file,   )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//dataloader.py
 )
 
@@ -658,6 +570,98 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//pipeline.py
 )
 
+[mlmodels\preprocessor.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[EncoderMissingEncoderError.__init__(self, encoder_pars,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[EncoderMissingIndexError.__init__(self, encoder_pars,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[EncoderOutputSizeError.__init__(self, output_name, output_size,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[MissingDataPreprocessorError.__init__(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[Preprocessor.__init__(self, preprocessor_dict,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[Preprocessor._interpret_encoder(self, encoder_pars,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[Preprocessor._interpret_preprocessor(self, pars,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[Preprocessor._interpret_preprocessor_dict(self, preprocessor_dict,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[Preprocessor.fit_transform(self, data,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[Preprocessor.transform(self, data,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[PreprocessorNotFittedError.__init__(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[PreprocssingOutputDict.__getitem__(self, key,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[PreprocssingOutputDict.__init__(self, data,   *args, **kwargs)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[PreprocssingOutputDict.__repr__(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[PreprocssingOutputDict.__setitem__(self, key, value,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[PreprocssingOutputDict.__str__(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[PreprocssingOutputDict.values(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocessor.py
+)
+
 [mlmodels\util.py
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
 )
@@ -718,6 +722,10 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
 )
 
+[get_device_torch(  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
+)
+
 [get_model_uri(file,   )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
 )
@@ -735,6 +743,14 @@
 )
 
 [load(load_pars,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
+)
+
+[load_callable_from_dict(function_dict,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
+)
+
+[load_callable_from_uri(uri,   )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
 )
 
@@ -770,10 +786,6 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
 )
 
-[metrics_eval( metric_list=["mean_squared_error"], ytrue=None, ypred=None, ypred_proba=None,  )
-](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
-)
-
 [model_get_list( folder=None, block_list=[],  )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
 )
@@ -798,7 +810,7 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
 )
 
-[params_json_load(path,  config_mode="test",  )
+[params_json_load(path,  config_mode="test", tlist=[ "model_pars", "data_pars", "compute_pars", "out_pars"],  )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//util.py
 )
 
@@ -958,7 +970,7 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest.py
 )
 
-[test_all( arg=None,  )
+[test_benchmark( arg=None,  )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest.py
 )
 
@@ -1096,6 +1108,54 @@
 
 [
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//config//json//model_tch//raw//vae_pretraining_encoder//text_beta.py
+)
+
+[mlmodels\example\arun_hyper.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_hyper.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_hyper.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_hyper.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_hyper.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_hyper.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_hyper.py
+)
+
+[mlmodels\example\arun_model.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_model.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_model.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_model.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_model.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_model.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//example//arun_model.py
 )
 
 [mlmodels\model_dev\__init__.py
@@ -3978,7 +4038,7 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//armdn.py
 )
 
-[get_dataset(data_params,   )
+[get_dataset(data_pars,   )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//armdn.py
 )
 
@@ -4276,6 +4336,70 @@
 
 [
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm.py
+)
+
+[mlmodels\model_keras\namentity_crm_bilstm_dataloader.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None,  **kwargs)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[fit(model,  data_pars=None, compute_pars=None, out_pars=None,  **kw)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[fit_metrics(model,  data_pars=None, compute_pars=None, out_pars=None,  **kw)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[get_dataset(data_pars,  return_preprocessor_function=False,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[get_params( param_pars={},  **kw)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[load(load_pars,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[predict(model,  sess=None, data_pars=None, out_pars=None, compute_pars=None,  **kw)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[reset_model(  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[save( model=None, session=None, save_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[test( data_path="dataset/", pars_choice="json", config_mode="test",  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_keras//namentity_crm_bilstm_dataloader.py
 )
 
 [mlmodels\model_keras\nbeats.py
@@ -10430,6 +10554,74 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//02_mlp.py
 )
 
+[mlmodels\model_tch\Autokeras.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None, out_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[fit(model,  data_pars=None, compute_pars=None, out_pars=None,  **kwargs)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[fit_metrics(model,  data_pars=None, compute_pars=None, out_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[get_config_file(  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[get_dataset( data_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[get_dataset_imbd(data_pars,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[get_params( param_pars=None,  **kw)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[load(load_pars,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[predict(model,  session=None, data_pars=None, compute_pars=None, out_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[save(model,  session=None, save_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[test( data_path="dataset/", pars_choice="json", config_mode="test",  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//Autokeras.py
+)
+
 [mlmodels\model_tch\matchzoo_models.py
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//matchzoo_models.py
 )
@@ -10506,6 +10698,14 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//nbeats.py
 )
 
+[Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//nbeats.py
+)
+
+[Model.split(arr, size,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//nbeats.py
+)
+
 [
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//nbeats.py
 )
@@ -10566,7 +10766,7 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//nbeats.py
 )
 
-[test( data_path="dataset/milk.csv",  )
+[test( choice="json", data_path="nbeats.json", config_mode="test",  )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//nbeats.py
 )
 
@@ -10624,6 +10824,66 @@
 
 [
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pplm.py
+)
+
+[mlmodels\model_tch\pytorch_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None, out_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[fit(model,  data_pars=None, compute_pars=None, out_pars=None,  **kwargs)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[fit_metrics(model,  data_pars=None, compute_pars=None, out_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[get_dataset( data_pars=None,  **kw)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[get_params( param_pars=None,  **kw)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[load(load_pars,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[predict(model,  session=None, data_pars=None, compute_pars=None, out_pars=None, imax=1, return_ytrue=1,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[save(model,  session=None, save_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[test( data_path="dataset/", pars_choice="json", config_mode="test",  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//pytorch_vae.py
 )
 
 [mlmodels\model_tch\textcnn.py
@@ -10738,6 +10998,98 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn.py
 )
 
+[mlmodels\model_tch\textcnn_dataloader.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[Model.__init__(self,  model_pars=None, data_pars=None, compute_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[TextCNN.__init__(self,  model_pars=None, data_pars=None, compute_pars=None,  **kwargs)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[TextCNN.forward(self, x,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[TextCNN.rebuild_embed(self, vocab_built,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[_get_device(  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[_train(m, device, train_itr, optimizer, epoch, max_epoch,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[_valid(m, device, test_itr,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[fit(model,  data_pars=None, compute_pars=None, out_pars=None,  **kwargs)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[fit_metrics(model,  data_pars=None, compute_pars=None, out_pars=None,  **kwargs)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[get_config_file(  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[get_data_file(  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[get_dataset( data_pars=None, out_pars=None, return_preprocessor_function=False,  **kwargs)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[get_params( param_pars=None,  **kw)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[load( load_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[predict(model,  session=None, data_pars=None, compute_pars=None, out_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[save(model,  session=None, save_pars=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[test( data_path="dataset/", pars_choice="json", config_mode="test",  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//textcnn_dataloader.py
+)
+
 [mlmodels\model_tch\torchhub.py
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//torchhub.py
 )
@@ -10798,7 +11150,7 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//torchhub.py
 )
 
-[predict(model,  session=None, data_pars=None, compute_pars=None, out_pars=None,  )
+[predict(model,  session=None, data_pars=None, compute_pars=None, out_pars=None, imax=1, return_ytrue=1,  )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//torchhub.py
 )
 
@@ -10807,6 +11159,10 @@
 )
 
 [test( data_path="dataset/", pars_choice="json", config_mode="test",  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//torchhub.py
+)
+
+[test2( data_path="dataset/", pars_choice="json", config_mode="test",  )
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//torchhub.py
 )
 
@@ -16692,6 +17048,1658 @@
 
 [
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_gan//models//wgan_gp//wgan_gp.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\experiment.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[VAEXperiment.__init__(self, vae_model,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[VAEXperiment.configure_optimizers(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[VAEXperiment.data_transforms(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[VAEXperiment.sample_images(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[VAEXperiment.train_dataloader(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[VAEXperiment.val_dataloader(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[VAEXperiment.validation_end(self, outputs,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[VAEXperiment.validation_step(self, batch, batch_idx,  optimizer_idx=0,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//experiment.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\run.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//run.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//run.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//run.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//run.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//run.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//run.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\utils.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//utils.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//utils.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//utils.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//utils.py
+)
+
+[data_loader(fn,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//utils.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//utils.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//utils.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\base.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//base.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//base.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//base.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//base.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//base.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//base.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\betatc_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//betatc_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//betatc_vae.py
+)
+
+[BetaTCVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//betatc_vae.py
+)
+
+[BetaTCVAE.encode(self, input,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//betatc_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//betatc_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//betatc_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//betatc_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//betatc_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\beta_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//beta_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//beta_vae.py
+)
+
+[BetaVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//beta_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//beta_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//beta_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//beta_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//beta_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\cat_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cat_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cat_vae.py
+)
+
+[CategoricalVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cat_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cat_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cat_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cat_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cat_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\cvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cvae.py
+)
+
+[ConditionalVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//cvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\dfcvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dfcvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dfcvae.py
+)
+
+[DFCVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dfcvae.py
+)
+
+[DFCVAE.encode(self, input,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dfcvae.py
+)
+
+[DFCVAE.loss_function(self,   *args, **kwargs)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dfcvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dfcvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dfcvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dfcvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dfcvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\dip_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dip_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dip_vae.py
+)
+
+[DIPVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dip_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dip_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dip_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dip_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//dip_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\fvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//fvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//fvae.py
+)
+
+[FactorVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//fvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//fvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//fvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//fvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//fvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\gamma_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[GammaVAE.I_function(self, a, b, c, d,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[GammaVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[GammaVAE.encode(self, input,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[GammaVAE.loss_function(self,   *args, **kwargs)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[GammaVAE.vae_gamma_kl_loss(self, a, b, c, d,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[GammaVAE.weight_init(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[init_(m,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//gamma_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\hvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//hvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//hvae.py
+)
+
+[HVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//hvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//hvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//hvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//hvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//hvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\info_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//info_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//info_vae.py
+)
+
+[InfoVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//info_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//info_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//info_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//info_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//info_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\iwae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//iwae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//iwae.py
+)
+
+[IWAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//iwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//iwae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//iwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//iwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//iwae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\joint_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//joint_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//joint_vae.py
+)
+
+[JointVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//joint_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//joint_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//joint_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//joint_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//joint_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\logcosh_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//logcosh_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//logcosh_vae.py
+)
+
+[LogCoshVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//logcosh_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//logcosh_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//logcosh_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//logcosh_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//logcosh_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\lvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[EncoderBlock.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[LVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[LVAE.encode(self, input,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[LVAE.merge_gauss(self, mu_1,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[LadderBlock.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[conv_out_shape(img_size,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//lvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\miwae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//miwae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//miwae.py
+)
+
+[MIWAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//miwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//miwae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//miwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//miwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//miwae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\mssim_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//mssim_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//mssim_vae.py
+)
+
+[MSSIM.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//mssim_vae.py
+)
+
+[MSSIM.ssim(self, img1,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//mssim_vae.py
+)
+
+[MSSIMVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//mssim_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//mssim_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//mssim_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//mssim_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//mssim_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\swae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//swae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//swae.py
+)
+
+[SWAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//swae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//swae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//swae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//swae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//swae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\twostage_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//twostage_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//twostage_vae.py
+)
+
+[TwoStageVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//twostage_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//twostage_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//twostage_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//twostage_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//twostage_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\types_.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//types_.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//types_.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//types_.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//types_.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//types_.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//types_.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\vampvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vampvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vampvae.py
+)
+
+[VampVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vampvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vampvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vampvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vampvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vampvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\vanilla_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vanilla_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vanilla_vae.py
+)
+
+[VanillaVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vanilla_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vanilla_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vanilla_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vanilla_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vanilla_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\vq_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vq_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vq_vae.py
+)
+
+[ResidualLayer.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vq_vae.py
+)
+
+[VQVAE.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vq_vae.py
+)
+
+[VectorQuantizer.__init__(self, num_embeddings,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vq_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vq_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vq_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vq_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//vq_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\wae_mmd.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//wae_mmd.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//wae_mmd.py
+)
+
+[WAE_MMD.__init__(self, in_channels,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//wae_mmd.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//wae_mmd.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//wae_mmd.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//wae_mmd.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//wae_mmd.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\models\__init__.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//__init__.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//__init__.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//__init__.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//__init__.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//__init__.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//models//__init__.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\bvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//bvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//bvae.py
+)
+
+[TestVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//bvae.py
+)
+
+[TestVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//bvae.py
+)
+
+[TestVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//bvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//bvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//bvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//bvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//bvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_betatcvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[TestBetaTCVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[TestBetaTCVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[TestBetaTCVAE.test_generate(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[TestBetaTCVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[TestBetaTCVAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_betatcvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_cat_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_cat_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_cat_vae.py
+)
+
+[TestVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_cat_vae.py
+)
+
+[TestVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_cat_vae.py
+)
+
+[TestVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_cat_vae.py
+)
+
+[TestVAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_cat_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_cat_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_cat_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_cat_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_cat_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_dfc.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dfc.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dfc.py
+)
+
+[TestDFCVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dfc.py
+)
+
+[TestDFCVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dfc.py
+)
+
+[TestDFCVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dfc.py
+)
+
+[TestDFCVAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dfc.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dfc.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dfc.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dfc.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dfc.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_dipvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[TestDIPVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[TestDIPVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[TestDIPVAE.test_generate(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[TestDIPVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[TestDIPVAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_dipvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_fvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[TestFAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[TestFAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[TestFAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[TestFAE.test_optim(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[TestFAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_fvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_gvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_gvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_gvae.py
+)
+
+[TestGammaVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_gvae.py
+)
+
+[TestGammaVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_gvae.py
+)
+
+[TestGammaVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_gvae.py
+)
+
+[TestGammaVAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_gvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_gvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_gvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_gvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_gvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_hvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_hvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_hvae.py
+)
+
+[TestHVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_hvae.py
+)
+
+[TestHVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_hvae.py
+)
+
+[TestHVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_hvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_hvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_hvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_hvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_hvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_iwae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_iwae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_iwae.py
+)
+
+[TestIWAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_iwae.py
+)
+
+[TestIWAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_iwae.py
+)
+
+[TestIWAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_iwae.py
+)
+
+[TestIWAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_iwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_iwae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_iwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_iwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_iwae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_joint_Vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_joint_Vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_joint_Vae.py
+)
+
+[TestVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_joint_Vae.py
+)
+
+[TestVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_joint_Vae.py
+)
+
+[TestVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_joint_Vae.py
+)
+
+[TestVAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_joint_Vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_joint_Vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_joint_Vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_joint_Vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_joint_Vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_logcosh.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_logcosh.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_logcosh.py
+)
+
+[TestVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_logcosh.py
+)
+
+[TestVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_logcosh.py
+)
+
+[TestVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_logcosh.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_logcosh.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_logcosh.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_logcosh.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_logcosh.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_lvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_lvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_lvae.py
+)
+
+[TestLVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_lvae.py
+)
+
+[TestLVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_lvae.py
+)
+
+[TestLVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_lvae.py
+)
+
+[TestLVAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_lvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_lvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_lvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_lvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_lvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_miwae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[TestMIWAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[TestMIWAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[TestMIWAE.test_generate(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[TestMIWAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[TestMIWAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_miwae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_mssimvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_mssimvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_mssimvae.py
+)
+
+[TestMSSIMVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_mssimvae.py
+)
+
+[TestMSSIMVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_mssimvae.py
+)
+
+[TestMSSIMVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_mssimvae.py
+)
+
+[TestMSSIMVAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_mssimvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_mssimvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_mssimvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_mssimvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_mssimvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_swae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_swae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_swae.py
+)
+
+[TestSWAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_swae.py
+)
+
+[TestSWAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_swae.py
+)
+
+[TestSWAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_swae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_swae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_swae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_swae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_swae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vae.py
+)
+
+[TestVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vae.py
+)
+
+[TestVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vae.py
+)
+
+[TestVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_vq_vae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[TestVQVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[TestVQVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[TestVQVAE.test_generate(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[TestVQVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[TestVQVAE.test_sample(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_vq_vae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\test_wae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_wae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_wae.py
+)
+
+[TestWAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_wae.py
+)
+
+[TestWAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_wae.py
+)
+
+[TestWAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_wae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_wae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_wae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_wae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//test_wae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\text_cvae.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_cvae.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_cvae.py
+)
+
+[TestCVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_cvae.py
+)
+
+[TestCVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_cvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_cvae.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_cvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_cvae.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_cvae.py
+)
+
+[mlmodels\model_tch\raw\pytorch_vae\tests\text_vamp.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_vamp.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_vamp.py
+)
+
+[TestVVAE.setUp(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_vamp.py
+)
+
+[TestVVAE.test_forward(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_vamp.py
+)
+
+[TestVVAE.test_loss(self,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_vamp.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_vamp.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_vamp.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_vamp.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//model_tch//raw//pytorch_vae//tests//text_vamp.py
 )
 
 [mlmodels\model_tch\raw\textcnn\dataset.py
@@ -48794,6 +50802,54 @@
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//keras_deepctr_tabular.py
 )
 
+[mlmodels\preprocess\torch_text_cnn.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[clean_str(string,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[imdb_spacy_tokenizer(text,  lang="en",  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[test_onehot_sentences(data, max_len,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[test_pandas_fillna(data,   **args)
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[test_word_categorical_labels_per_sentence(data, max_len,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[test_word_count(data,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//torch_text_cnn.py
+)
+
 [mlmodels\preprocess\__init__.py
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//preprocess//__init__.py
 )
@@ -48960,6 +51016,58 @@
 
 [
 ](https://github.com/arita37/mlmodels/tree/dev/mlmodels//template//model_xxx.py
+)
+
+[mlmodels\ztest\benchmark3.py
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[----------------methods----------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[---------------functions---------------
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[benchmark_run( bench_pars=None, args=None, config_mode="test",  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[benchmark_run_mnist( bench_pars=None, args=None, config_mode="test",  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[cli_load_arguments( config_file=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[config_model_list( folder=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[get_all_json_path(json_path,   )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[main(  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[metric_eval( actual=None, pred=None, metric_name="mean_absolute_error",  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[preprocess_timeseries_m5( data_path=None, dataset_name=None, pred_length=10, item_id=None,  )
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
+)
+
+[
+](https://github.com/arita37/mlmodels/tree/dev/mlmodels//ztest//benchmark3.py
 )
 
 

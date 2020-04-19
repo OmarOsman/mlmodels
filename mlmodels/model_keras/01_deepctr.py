@@ -75,42 +75,91 @@ from deepctr.models import DeepFM
 
 # from preprocess import _preprocess_criteo, _preprocess_movielens
 
+# Note: keep that to disable eager mode with tf 2.x
+import tensorflow as tf
+if tf.__version__ >= '2.0.0':
+    tf.compat.v1.disable_eager_execution()
+
 
 ####################################################################################################
 # Helper functions
 from mlmodels.util import os_package_root_path, log, path_norm
 from mlmodels.util import save_keras, load_keras
-
+from mlmodels.preprocess.tabular_keras  import get_test_data, get_xy_fd_dien, get_xy_fd_din, get_xy_fd_dsin
 
 
 
 ####################################################################################################
+DATA_PARAMS = {
+    "AFM": {"sparse_feature_num": 3, "dense_feature_num": 0},
+    "AutoInt":{"sparse_feature_num": 1, "dense_feature_num": 1},
+    "CCPM": {"sparse_feature_num": 3, "dense_feature_num":0},
+    "DCN": {"sparse_feature_num": 3, "dense_feature_num": 3},
+    "DeepFM": {"sparse_feature_num": 1, "dense_feature_num": 1},
+    "DIEN": {},
+    "DIN": {},
+    "DSIN": {},
+    "FGCNN": {"embedding_size": 8, "sparse_feature_num": 1, "dense_feature_num": 1},
+    "FiBiNET": {"sparse_feature_num": 2, "dense_feature_num": 2},
+    "FLEN": {"embedding_size": 2, "sparse_feature_num": 6, "dense_feature_num": 6, "use_group": True},
+    "FNN": {"sparse_feature_num": 1, "dense_feature_num": 1},
+    "MLR": {"sparse_feature_num": 0, "dense_feature_num": 2, "prefix": "region"},
+    "NFM": {"sparse_feature_num": 1, "dense_feature_num": 1},
+    "ONN": {"sparse_feature_num": 2, "dense_feature_num": 2, "sequence_feature":('sum', 'mean', 'max',), "hash_flag":True},
+    "PNN": {"sparse_feature_num": 1, "dense_feature_num": 1},
+    "WDL": {"sparse_feature_num": 2, "dense_feature_num": 0},
+    "xDeepFM": {"sparse_feature_num": 1, "dense_feature_num": 1}
+}
+
+MODEL_PARAMS = {
+    "AFM": {"use_attention": True, "afm_dropout": 0.5},
+    "AutoInt":{"att_layer_num": 1, "dnn_hidden_units": (), "dnn_dropout": 0.5},
+    "CCPM": {"conv_kernel_width": (3, 2), "conv_filters": (2, 1), "dnn_hidden_units": [32,], "dnn_dropout": 0.5},
+    "DCN": {"cross_num": 0, "dnn_hidden_units": (8,), "dnn_dropout": 0.5},
+    "DeepFM": {"dnn_hidden_units": (2,), "dnn_dropout": 0.5},
+    "DIEN": {"dnn_hidden_units": [4, 4, 4], "dnn_dropout": 0.5, "gru_type": "GRU"},
+    "DIN": {"dnn_hidden_units":[4, 4, 4], "dnn_dropout":0.5},
+    "DSIN": {"sess_max_count":2, "dnn_hidden_units":[4, 4, 4], "dnn_dropout":0.5},
+    "FGCNN": {"conv_kernel_width":(3,2), "conv_filters":(2, 1), "new_maps":(2, 2), "pooling_width":(2, 2), "dnn_hidden_units": (32, ), "dnn_dropout":0.5},
+    "FiBiNET":{"bilinear_type": "all", "dnn_hidden_units":[4,], "dnn_dropout":0.5},
+    "FLEN": {"dnn_hidden_units": (3,), "dnn_dropout":0.5},
+    "FNN": {"dnn_hidden_units":[32, 32], "dnn_dropout":0.5},
+    "MLR": {},
+    "NFM": {"dnn_hidden_units":[32, 32], "dnn_dropout":0.5},
+    "ONN": {"dnn_hidden_units": [32, 32], "embedding_size":4, "dnn_dropout":0.5},
+    "PNN": {"embedding_size":4, "dnn_hidden_units":[4, 4], "dnn_dropout":0.5, "use_inner": True, "use_outter": True},
+    "WDL": {"dnn_hidden_units":[32, 32], "dnn_dropout":0.5},
+    "xDeepFM": {"dnn_dropout": 0.5, "dnn_hidden_units": (8,), "cin_layer_size": (), "cin_split_half": True, "cin_activation": 'linear'}
+}
+
 class Model:
     def __init__(self, model_pars=None, data_pars=None, compute_pars=None, **kwargs):
-        from importlib import import_module
-        
         if model_pars is None :
           return self
        
         model_name = model_pars.get("model_name", "DeepFM")   
-        model_list = ["AFM", "AUTOINT", "CCPM", "DCN", "DeepFM", "DIEN", "DIN", "DSIN", "FGCNN", "FIBINET",
-                      "FLEN", "FNN", "MLR", "NFM", "ONN", "PNN", "WDL", "XDeepFM", ]
+        model_list = list(MODEL_PARAMS.keys())
         
         if not model_name in model_list :
           raise ValueError('Not existing model', model_name)
           return self
-        
+
         modeli = getattr(importlib.import_module("deepctr.models"), model_name)
-        
-        
         # 4.Define Model
-        linear_cols, dnn_cols = get_dataset(data_pars)[1:3]
-        # self.model = DeepFM(linear_cols, dnn_cols, model_pars['task'])
-        self.model = modeli(linear_cols, dnn_cols, model_pars['task'])
-        
-        metrics = compute_pars.get("metrics",  ['binary_crossentropy'])
-        self.model.compile(model_pars['optimization'], model_pars['cost'], metrics= metrics, )
+        x, y, feature_columns, behavior_feature_list = kwargs["dataset"]
+        if model_name in ["DIEN", "DIN", "DSIN"]:
+            self.model = modeli(feature_columns, behavior_feature_list, **MODEL_PARAMS[model_name])
+        elif model_name == "MLR":
+            self.model = modeli(feature_columns)
+        elif model_name == "PNN":
+            self.model = modeli(feature_columns, **MODEL_PARAMS[model_name])
+        else:
+            self.model = modeli(feature_columns, feature_columns, **MODEL_PARAMS[model_name])
+
+        self.model.compile(model_pars['optimization'], model_pars['cost'],
+                           metrics=compute_pars.get("metrics", ['binary_crossentropy']), )
         self.model.summary()
+
 
         
 ##################################################################################################
@@ -241,44 +290,26 @@ def _preprocess_movielens(df, **kw):
     return df, linear_cols, dnn_cols, train, test, target, ytrue
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def get_dataset(data_pars=None, **kw):
     ##check whether dataset is of kind train or test
-    data_path = data_pars['train_data_path']
+    data_path = data_pars.get("train_data_path", "")
     data_type = data_pars['dataset_type']
     test_size = data_pars['test_size']
 
 
     #### To test all models
-    if data_type == "synthetic" is None :
-      from mlmodels.preprocess.keras_deepctr_tabular  import get_test_data
-      # model_name = "AFM"
-      use_attention, sparse_feature_num, dense_feature_num = True,3,0
-      sample_size = 10
-      x, y, feature_columns = get_test_data(sample_size, sparse_feature_num=sparse_feature_num,
-                                            dense_feature_num=dense_feature_num)
+    if data_type == "synthesis":
+        if data_pars["dataset_name"] == "DIEN":
+            x, y, feature_columns, behavior_feature_list = get_xy_fd_dien(hash_flag=True)
+        elif data_pars["dataset_name"] == "DIN":
+            x, y, feature_columns, behavior_feature_list = get_xy_fd_din(hash_flag=True)
+        elif data_pars["dataset_name"] == "DSIN":
+            x, y, feature_columns, behavior_feature_list = get_xy_fd_dsin(hash_flag=True)
+        else:
+            x, y, feature_columns = get_test_data(**DATA_PARAMS[data_pars["dataset_name"]])
+            behavior_feature_list = None
 
-
-      ##TODO : train split
-      return x, y, feature_columns
-      # model = AFM(feature_columns, feature_columns, use_attention=use_attention, afm_dropout=0.5)
-
-
-
+        return x, y, feature_columns, behavior_feature_list
   
     #### read from csv file
     if data_pars.get("uri_type") == "pickle":
@@ -309,56 +340,26 @@ def fit(model, session=None, compute_pars=None, data_pars=None, out_pars=None,
     """
           Classe Model --> model,   model.model contains thte sub-model
     """
-    data, linear_cols, dnn_cols, train, test, target, ytrue = get_dataset(data_pars)
-    multiple_value = data_pars.get('multiple_value', None)
+    x, y, feature_columns, behavior_feature_list = kwargs["dataset"]
 
-    m = compute_pars
-
-    if multiple_value is None:
-        feature_names = get_feature_names(linear_cols + dnn_cols)
-        train_model_input = {name: train[name] for name in feature_names}
-        model.model.fit(train_model_input, train[target].values,
-                        batch_size=m['batch_size'], epochs=m['epochs'], verbose=2,
-                        validation_split=m['validation_split'], )
-
-    else:
-        model.model.fit(train, data[target].values,
-                        batch_size=m['batch_size'], epochs=m['epochs'], verbose=2,
-                        validation_split=m['validation_split'], )
+    model.model.fit(x, y,
+                    batch_size=compute_pars["batch_size"],
+                    epochs=compute_pars["epochs"],
+                    validation_split=compute_pars["validation_split"])
 
     return model
 
 
 # Model p redict
 def predict(model, session=None, compute_pars=None, data_pars=None, out_pars=None, **kwargs):
-    # load test dataset
-    data, linear_cols, dnn_cols, train, test, target, ytrue = get_dataset(data_pars)
-    feature_names = get_feature_names(linear_cols + dnn_cols, )
-    test_model_input = {name: test[name] for name in feature_names}
-
-    multiple_value = data_pars.get('multiple_value', None)
-    # predict
-    if multiple_value is None:
-        pred_ans = model.model.predict(test_model_input, batch_size=compute_pars['batch_size'])
-
-    else:
-        pred_ans = None
+    x, y, feature_columns, behavior_feature_list = kwargs["dataset"]
+    pred_ans = model.model.predict(x, batch_size=compute_pars['batch_size'])
 
     return pred_ans
 
 
 def metrics(ypred, ytrue=None, session=None, compute_pars=None, data_pars=None, out_pars=None, **kwargs):
-    if kwargs.get("task") == "binary":
-        metrics_dict = {"LogLoss": log_loss(ytrue, ypred),
-                        "AUC": roc_auc_score(ytrue, ypred)}
-
-    elif kwargs.get("task") == "regression":
-        multiple_value = data_pars.get('multiple_value', None)
-        if multiple_value is None:
-            print("==>ytrue: ", ytrue, ypred)
-            metrics_dict = {"MSE": mean_squared_error(ytrue, ypred)}
-        else:
-            metrics_dict = {}
+    metrics_dict = {"MSE": mean_squared_error(ytrue, ypred)}
     return metrics_dict
 
 
@@ -398,7 +399,7 @@ def config_load(data_path, file_default, config_mode):
     return model_pars, data_pars, compute_pars, out_pars
 
 
-def get_params(choice="", data_path="dataset/", config_mode="test", **kw):
+def get_params(choice="", data_path="dataset/", config_mode="test", **kwargs):
     if choice == "json":
         model_pars, data_pars, compute_pars, out_pars = config_load(data_path,
                                                                     file_default="model_keras/01_deepctr.json",
@@ -414,7 +415,7 @@ def get_params(choice="", data_path="dataset/", config_mode="test", **kw):
         data_pars = {"train_data_path": train_data_path, "dataset_type": "criteo", "test_size": 0.2}
 
         log("#### Model params   #################################################")
-        model_pars = {"task": "binary", "model_type": "DeepFM", "optimization": "adam", "cost": "binary_crossentropy"}
+        model_pars = {"task": "binary", "model_name": "DeepFM", "optimization": "adam", "cost": "binary_crossentropy"}
         compute_pars = {"batch_size": 256, "epochs": 10, "validation_split": 0.2}
         out_pars = {"path": out_path}
 
@@ -429,14 +430,14 @@ def get_params(choice="", data_path="dataset/", config_mode="test", **kw):
                      "dataset_type": "criteo", "test_size": 0.2}
 
         log("#### Model params   #################################################")
-        model_pars = {"task": "binary", "model_type": "DeepFM", "optimization": "adam", "cost": "binary_crossentropy"}
+        model_pars = {"task": "binary", "model_name": "DeepFM", "optimization": "adam", "cost": "binary_crossentropy"}
         compute_pars = {"batch_size": 256, "epochs": 10, "validation_split": 0.2}
         out_pars = {"path": out_path}
 
 
     elif choice == 2:
         log("#### Path params   ################################################")
-        data_path, _ = path_setup(out_folder="/deepctr_test/", data_path=data_path)
+        data_path, _ = path_setup(out_folder="/ here_test/", data_path=data_path)
         out_path = path_norm("ztest/model_keras/deepctr/model.h5")
 
         train_data_path = data_path + "/recommender/movielens_sample.txt"
@@ -444,7 +445,7 @@ def get_params(choice="", data_path="dataset/", config_mode="test", **kw):
                      "test_size": 0.2}
 
         log("#### Model params   ################################################")
-        model_pars = {"task": "regression", "model_type": "DeepFM", "optimization": "adam", "cost": "mse"}
+        model_pars = {"task": "regression", "model_name": "DeepFM", "optimization": "adam", "cost": "mse"}
         compute_pars = {"batch_size": 256, "epochs": 10,
                         "validation_split": 0.2}
         out_pars = {"path": out_path}
@@ -460,11 +461,10 @@ def get_params(choice="", data_path="dataset/", config_mode="test", **kw):
                      "dataset_type": "movie_len", "test_size": 0.2}
 
         log("#### Model params   ################################################")
-        model_pars = {"task": "regression", "model_type": "DeepFM", "optimization": "adam", "cost": "mse"}
+        model_pars = {"task": "regression", "model_name": "DeepFM", "optimization": "adam", "cost": "mse"}
         compute_pars = {"batch_size": 256, "epochs": 10,
                         "validation_split": 0.2}
         out_pars = {"path": out_path}
-
 
     elif choice == 4:
         log("#### Path params   #################################################")
@@ -476,9 +476,24 @@ def get_params(choice="", data_path="dataset/", config_mode="test", **kw):
                      "hash_feature": True, "dataset_type": "movie_len", "test_size": 0.2}
 
         log("#### Model params   ################################################")
-        model_pars = {"task": "regression", "model_type": "DeepFM", "optimization": "adam", "cost": "mse"}
+        model_pars = {"task": "regression", "model_name": "DeepFM", "optimization": "adam", "cost": "mse"}
         compute_pars = {"batch_size": 256, "epochs": 10,
                         "validation_split": 0.2}
+        out_pars = {"path": out_path}
+
+    elif choice == 5:
+        model_name = kwargs["model_name"]
+
+        log("#### Path params   #################################################")
+        model_name = kwargs["model_name"]
+        out_path = path_norm(f"ztest/model_keras/deepctr/model_{model_name}.h5")
+
+        data_pars = {"dataset_type": "synthesis", "sample_size": 8, "test_size": 0.2, "dataset_name": model_name, **DATA_PARAMS[model_name]}
+
+        log("#### Model params   ################################################")
+        model_pars = {"model_name": model_name, "optimization": "adam", "cost": "mse"}
+        compute_pars = {"batch_size": 100, "epochs": 1,
+                        "validation_split": 0.5}
         out_pars = {"path": out_path}
 
     return model_pars, data_pars, compute_pars, out_pars
@@ -486,12 +501,12 @@ def get_params(choice="", data_path="dataset/", config_mode="test", **kw):
 
 ########################################################################################################################
 ########################################################################################################################
-def test(data_path="dataset/", pars_choice=0):
+def test(data_path="dataset/", pars_choice=0, **kwargs):
     ### Local test
 
     log("#### Loading params   ##############################################")
     model_pars, data_pars, compute_pars, out_pars = get_params(choice=pars_choice,
-                                                               data_path=data_path)
+                                                               data_path=data_path, **kwargs)
     print(model_pars, data_pars, compute_pars, out_pars)
 
     log("#### Loading dataset   #############################################")
@@ -499,30 +514,33 @@ def test(data_path="dataset/", pars_choice=0):
 
     log("#### Model init, fit   #############################################")
     from mlmodels.models import module_load_full, fit, predict
-    module, model = module_load_full("model_keras.01_deepctr", model_pars, data_pars, compute_pars)
-    model = fit(module, model, data_pars=data_pars, compute_pars=compute_pars, out_pars=out_pars)
+    module, model = module_load_full("model_keras.01_deepctr", model_pars, data_pars, compute_pars, dataset=dataset)
+    model = fit(module, model, data_pars=data_pars, compute_pars=compute_pars, out_pars=out_pars, dataset=dataset)
 
-    log("#### Predict   ####################################################")
-    ypred = predict(module, model, compute_pars=compute_pars, data_pars=data_pars, out_pars=out_pars)
+    # log("#### Predict   ####################################################")
+    ypred = predict(module, model, compute_pars=compute_pars, data_pars=data_pars, out_pars=out_pars, dataset=dataset)
 
     log("#### metrics   ####################################################")
-    metrics_val = metrics(ypred, dataset[-1], compute_pars=compute_pars, data_pars=data_pars, out_pars=out_pars,
-                          task=model_pars['task'])
+    metrics_val = metrics(ypred, dataset[1], compute_pars=compute_pars, data_pars=data_pars, out_pars=out_pars)
     print(metrics_val)
 
     log("#### Plot   #######################################################")
 
     log("#### Save/Load   ##################################################")
     save_keras(model, save_pars=out_pars)
-    # TODO: load model now is hang forever => need check more
-    # model2 = load_keras(out_pars)
-    # model2.model.summary()
+    from deepctr.layers import custom_objects
+    model2 = load_keras(out_pars, custom_pars={"custom_objects": custom_objects})
+    model2.model.summary()
 
 
 if __name__ == '__main__':
     VERBOSE = True
-    test(pars_choice=0)
-    test(pars_choice=1)
-    test(pars_choice=2)
-    test(pars_choice=3)
-    test(pars_choice=4)
+    for model_name in MODEL_PARAMS.keys():
+        if model_name == "FGCNN": # TODO: check save io
+            continue
+        test(pars_choice=5, **{"model_name": model_name})
+
+    # test(pars_choice=1)
+    # test(pars_choice=2)
+    # test(pars_choice=3)
+    # test(pars_choice=4)
